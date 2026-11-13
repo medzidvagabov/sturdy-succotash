@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Админ-панель — «Помогалка»</title>
+<meta name="description" content="Панель администратора платформы «Помогалка»: модерация запросов, антифрод баллов, аналитика и управление пользователями.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230E9384'/%3E%3Ctext x='32' y='44' font-size='34' font-family='Arial' font-weight='bold' fill='white' text-anchor='middle'%3E%D0%9F%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/css/style.css">
+<script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="assets/js/data.js"></script>
+<script>
+(function(){
+  var P = window.POM;
+  var user = P.current();
+  var root = document.getElementById('root');
+
+  if(!user || (user.role !== 'admin' && user.role !== 'moderator')){
+    root.innerHTML = '<div class="deny"><div class="deny-card">' +
+      '<div class="dico"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div>' +
+      '<h2 style="font-family:\'Unbounded\';font-weight:600">Доступ только для администраторов</h2>' +
+      '<p>Эта панель доступна студенческим администраторам платформы. Войдите под демо-аккаунтом Анны, Дамира или Камилы на странице входа.</p>' +
+      '<a class="btn btn-teal" href="login.html">Перейти к входу <span class="arr">→</span></a>' +
+      '<div style="margin-top:14px"><a href="index.html" style="font-size:13.5px;font-weight:700;color:var(--muted)">← На главную</a></div>' +
+      '</div></div>';
+    return;
+  }
+
+  var STATUS = {
+    new: { label: 'Новый', cls: 'st-new' }, inwork: { label: 'В работе', cls: 'st-inwork' },
+    pending: { label: 'Ждёт подтверждения', cls: 'st-pending' }, confirmed: { label: 'Подтверждён', cls: 'st-ok' },
+    rejected: { label: 'Отклонён', cls: 'st-rej' }
+  };
+  function stPill(s){ return '<span class="status ' + STATUS[s].cls + '">' + STATUS[s].label + '</span>'; }
+
+  var MENU = [
+    ['dash', 'Дашборд', '<path d="M3 3h8v8H3zM13 3h8v5h-8zM13 12h8v9h-8zM3 15h8v6H3z"/>'],
+    ['users', 'Пользователи', '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>'],
+    ['requests', 'Запросы', '<path d="M9 2h6a1 1 0 0 1 1 1v2H8V3a1 1 0 0 1 1-1z"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 12h6M9 16h6"/>'],
+    ['fraud', 'Антифрод', '<path d="M12 22s8-3.5 8-10V5l-8-3-8 3v7c0 6.5 8 10 8 10z"/><path d="M9 11.5l2 2 4-4.5"/>'],
+    ['analytics', 'Аналитика', '<path d="M3 17l5-6 4 3 6-8"/><path d="M3 21h18"/>'],
+    ['bonuses', 'Бонусы', '<rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M5 12v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-8"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5C11 3 12 8 12 8s1-5 4.5-5a2.5 2.5 0 0 1 0 5"/>']
+  ];
+  var TITLES = {
+    dash: ['Дашборд', 'Сводные показатели пилотного семестра в Астраханском ГМУ'],
+    users: ['Пользователи', 'Студенты, наставники и администраторы платформы'],
+    requests: ['Запросы', 'Все учебные запросы и их модерация'],
+    fraud: ['Антифрод', 'Автоматические флаги подозрительной активности в системе баллов'],
+    analytics: ['Аналитика', 'Обезличенные агрегированные данные для деканата — без индивидуальных оценок'],
+    bonuses: ['Бонусы', 'Каталог вознаграждений наставников, обмениваемых на баллы']
+  };
+
+  var current = 'dash';
+  var searchQ = '', roleF = 'all';
+  var reqFilter = 'all';
+
+  function icon(p){ return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + p + '</svg>'; }
+
+  /* ---------- каркас ---------- */
+  root.innerHTML =
+    '<div class="admin">' +
+      '<aside class="admin-side">' +
+        '<a class="app-logo" href="index.html" style="color:#fff;padding:6px 10px 14px">' +
+          '<span class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12.5V17c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5"/></svg></span>Помогалка</a>' +
+        '<div class="side-label">Управление платформой</div>' +
+        MENU.map(function(m){ return '<button class="sitem" data-view="' + m[0] + '">' + icon(m[2]) + '<span class="sname">' + m[1] + '</span></button>'; }).join('') +
+        '<div class="side-foot">Демо-стенд «Помогалки»<br>Росмолодёжь.Гранты · #делись_опытом<br>Все данные вымышлены</div>' +
+      '</aside>' +
+      '<main class="admin-main">' +
+        '<div class="admin-top">' +
+          '<div><h1 id="pageTitle" style="font-family:\'Unbounded\';font-weight:600"></h1><p id="pageSub"></p></div>' +
+          '<div class="right">' +
+            '<a class="btn-link" href="index.html">На сайт</a>' +
+            '<a class="btn-link" href="cabinet.html">Мой кабинет</a>' +
+            '<div class="userchip" id="chip"></div>' +
+            '<button class="btn-link btn-danger" id="btnLogout">Выйти</button>' +
+          '</div>' +
+        '</div>' +
+        '<div id="view"></div>' +
+      '</main>' +
+    '</div>';
+
+  document.getElementById('chip').innerHTML =
+    '<div class="uinfo"><b>' + P.esc(user.name) + '</b><span>' + P.ROLE_NAMES[user.role] + ' · ' + P.esc(user.title) + '</span></div>' + P.ava(user.name);
+  document.getElementById('btnLogout').addEventListener('click', function(){ P.logout(); window.location.href = 'login.html'; });
+  root.querySelectorAll('.sitem').forEach(function(b){
+    b.addEventListener('click', function(){ current = b.getAttribute('data-view'); paint(); });
+  });
+
+  function paint(){
+    root.querySelectorAll('.sitem').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-view') === current); });
+    document.getElementById('pageTitle').textContent = TITLES[current][0];
+    document.getElementById('pageSub').textContent = TITLES[current][1];
+    render();
+    window.scrollTo({top:0});
+  }
+
+  /* ---------- графики ---------- */
+  function barsHTML(data, color){
+    var max = Math.max.apply(null, data.map(function(d){ return d.n; }));
+    return '<div class="bars">' + data.map(function(d){
+      var h = Math.max(Math.round(d.n / max * 150), 12);
+      return '<div class="bar' + (color === 'amber' ? ' m-amber' : '') + '"><em>' + d.n + '</em><i style="height:' + h + 'px"></i><span>' + P.esc(d.disc || d.label) + '</span></div>';
+    }).join('') + '</div>';
+  }
+  function donutHTML(data, colors, centerLabel){
+    var total = data.reduce(function(s, d){ return s + d.n; }, 0);
+    var C = 2 * Math.PI * 80, off = 0;
+    var segs = data.map(function(d, i){
+      var len = d.n / total * C;
+      var s = '<circle cx="100" cy="100" r="80" stroke="' + colors[i] + '" stroke-dasharray="' + len.toFixed(2) + ' ' + C.toFixed(2) + '" stroke-dashoffset="' + (-off).toFixed(2) + '"/>';
+      off += len; return s;
+    }).join('');
+    return '<div style="display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center">' +
+      '<div class="donut-zone" style="width:190px"><svg viewBox="0 0 200 200" style="width:190px;height:190px;transform:rotate(-90deg)"><circle cx="100" cy="100" r="80" stroke="#E3EAF2"/>' + segs + '</svg>' +
+      '<div class="donut-center"><div><b style="font-size:18px">' + total + '</b><span>' + (centerLabel || 'запросов') + '</span></div></div></div>' +
+      '<div>' + data.map(function(d, i){
+        return '<div style="display:flex;align-items:center;gap:10px;padding:7px 0;font-size:14px"><span style="width:13px;height:13px;border-radius:5px;background:' + colors[i] + ';display:inline-block"></span><b>' + P.esc(d.label) + '</b><span style="margin-left:auto;font-weight:800">' + Math.round(d.n / total * 100) + '%</span></div>';
+      }).join('') + '</div></div>';
+  }
+
+  /* ---------- дашборд ---------- */
+  function dashView(){
+    var us = P.users(), rs = P.requests();
+    var confirmed = rs.filter(function(r){ return r.status === 'confirmed'; }).length;
+    var inwork = rs.filter(function(r){ return r.status === 'inwork' || r.status === 'pending'; }).length;
+    var flags = P.flags().filter(function(f){ return !f.action; }).length;
+    var mentors = us.filter(function(u){ return u.role === 'mentor'; }).length;
+    var students = us.filter(function(u){ return u.role === 'student'; }).length;
+    var stat = function(n, label, cls){
+      return '<div class="mini-stat ' + (cls || '') + '"><div class="n">' + n + '</div><span>' + label + '</span></div>';
+    };
+    var recent = rs.slice(0, 5);
+    return '<div class="statgrid">' +
+      stat(us.length, 'Всего пользователей платформы') +
+      stat(students + ' / ' + mentors, 'Студенты / наставники') +
+      stat(rs.length, 'Запросов создано') +
+      stat(confirmed, 'Запросов подтверждено') +
+      stat(inwork, 'Запросов в работе', 'm-amber') +
+      stat(flags, 'Флагов антифрода', flags ? 'm-red' : '') +
+      '</div>' +
+      '<div class="g2-cols">' +
+      '<div class="panel"><h3>Запросы по дисциплинам</h3><div class="psub">Срез за пилотный семестр: топ-8 дисциплин по числу запросов</div>' + barsHTML(P.ANALYTICS.byDisc) +
+        '<div class="pnote"><b style="color:var(--teal-deep)">Инсайт:</b>&nbsp;анатомия и гистология — лидеры запросов. Рекомендуется закрепить наставников по этим дисциплинам перед сессией.</div></div>' +
+      '<div class="panel"><h3>Замер тревожности</h3><div class="psub">Средний балл по шкале Спилбергера–Ханина (×14 для наглядности)</div>' +
+        '<div class="bars" style="height:150px">' +
+        '<div class="bar m-amber" style="min-width:90px"><em>6.6</em><i style="height:92px"></i><span>До запуска</span></div>' +
+        '<div class="bar" style="min-width:90px"><em>4.6</em><i style="height:64px"></i><span>После</span></div></div>' +
+        '<div class="pnote">Снижение тревожности в среднем на <b style="color:var(--teal-deep)">30%</b> — целевой показатель гранта (−30%) достигается.</div></div>' +
+      '</div>' +
+      '<div class="panel"><div class="panel-head"><h3>Последние запросы</h3><div class="right"><button class="btn-mini ghost" data-goto="requests">Все запросы →</button></div></div>' +
+      '<div class="table-wrap" style="margin-bottom:0"><table class="tbl"><thead><tr><th>Запрос</th><th>Дисциплина</th><th>Студент</th><th>Наставник</th><th>Статус</th></tr></thead><tbody>' +
+      recent.map(function(r){
+        return '<tr><td><span class="rowlink" data-open="' + r.id + '">' + P.esc(r.title) + '</span></td><td>' + P.esc(r.disc) + '</td><td>' + P.esc(P.userName(r.studentId)) + '</td><td>' + (r.mentorId ? P.esc(P.userName(r.mentorId)) : '—') + '</td><td>' + stPill(r.status) + '</td></tr>';
+      }).join('') +
+      '</tbody></table></div></div>';
+  }
+
+  /* ---------- пользователи ---------- */
+  function usersView(){
+    return '<div class="panel"><div class="panel-head">' +
+      '<input id="uSearch" class="field" style="margin:0;max-width:280px" placeholder="Поиск по ФИО или email…">' +
+      '<select id="uRole" class="field" style="margin:0;max-width:220px"><option value="all">Все роли</option><option value="student">Студенты</option><option value="mentor">Наставники</option><option value="admin">Администраторы</option></select>' +
+      '<span id="uCount" style="margin-left:auto;font-size:13px;color:var(--muted);font-weight:700"></span></div>' +
+      '<div class="table-wrap" style="margin-bottom:0"><table class="tbl"><thead><tr><th>Пользователь</th><th>Роль</th><th>Курс / факультет</th><th>Баллы</th><th>Статус</th><th></th></tr></thead><tbody id="uBody"></tbody></table></div></div>' +
+      '<div class="panel pnote">Блокировка запрещает вход, но сохраняет историю запросов пользователя — данные нужны для разбора споров. Полное удаление профилей не предусмотрено правилами платформы и 152-ФЗ.</div>';
+  }
+  function userRow(u, me){
+    return '<tr><td><div class="u-cell">' + P.ava(u.name) + '<div><b>' + P.esc(u.name) + '</b><span>' + P.esc(u.email) + '</span></div></div></td>' +
+      '<td><span class="badge-role r-' + u.role + '">' + P.ROLE_NAMES[u.role] + '</span>' + (u.title && u.role === 'admin' ? '<div style="font-size:11px;color:var(--muted);font-weight:700;margin-top:4px">' + P.esc(u.title) + '</div>' : '') + '</td>' +
+      '<td>' + P.esc(u.course) + '<br><span style="font-size:12px;color:var(--muted)">' + P.esc(u.faculty) + '</span></td>' +
+      '<td><b>' + (u.points || 0) + '</b></td>' +
+      '<td>' + (u.blocked ? '<span class="status st-block">Заблокирован</span>' : '<span class="status st-ok">Активен</span>') + '</td>' +
+      '<td class="acts">' + (u.id !== me.id
+        ? '<button class="btn-mini ' + (u.blocked ? '' : 'ghost') + '" data-block="' + u.id + '" data-to="' + (!u.blocked) + '">' + (u.blocked ? 'Разблокировать' : 'Заблокировать') + '</button>'
+        : '<span style="font-size:12px;color:var(--muted);font-weight:700">это вы</span>') + '</td></tr>';
+  }
+  function bindUsers(){
+    var s = document.getElementById('uSearch'), r = document.getElementById('uRole');
+    var body = document.getElementById('uBody');
+    s.value = searchQ; r.value = roleF;
+    function update(){
+      var list = P.users().filter(function(u){
+        if(roleF !== 'all' && u.role !== roleF) return false;
+        if(searchQ && !(u.name + ' ' + u.email).toLowerCase().includes(searchQ.toLowerCase())) return false;
+        return true;
+      });
+      document.getElementById('uCount').textContent = 'Найдено: ' + list.length;
+      body.innerHTML = list.map(function(u){ return userRow(u, user); }).join('');
+      body.querySelectorAll('[data-block]').forEach(function(b){
+        b.addEventListener('click', function(){
+          var id = b.getAttribute('data-block'), to = b.getAttribute('data-to') === 'true';
+          P.blockUser(id, to);
+          P.toast(to ? 'Пользователь заблокирован' : 'Пользователь разблокирован', to ? 'warn' : 'ok');
+          update();
+        });
+      });
+    }
+    s.addEventListener('input', function(){ searchQ = s.value; update(); });
+    r.addEventListener('change', function(){ roleF = r.value; update(); });
+    update();
+  }
+
+  /* ---------- запросы ---------- */
+  function requestsView(){
+    var rs = P.requests();
+    var chips = [['all', 'Все'], ['new', 'Новые'], ['inwork', 'В работе'], ['pending', 'Ждут подтверждения'], ['confirmed', 'Подтверждённые'], ['rejected', 'Отклонённые']];
+    var list = rs.filter(function(r){ return reqFilter === 'all' || r.status === reqFilter; });
+    return '<div class="panel"><div class="panel-head">' +
+      chips.map(function(c){ return '<button class="tab' + (reqFilter === c[0] ? ' active' : '') + '" data-rf="' + c[0] + '" style="padding:8px 14px">' + c[1] + ' (' + (c[0] === 'all' ? rs.length : rs.filter(function(r){ return r.status === c[0]; }).length) + ')</button>'; }).join('') +
+      '</div>' +
+      '<div class="table-wrap" style="margin-bottom:0"><table class="tbl"><thead><tr><th>Запрос</th><th>Дисциплина</th><th>Студент</th><th>Наставник</th><th>Баллы</th><th>Статус</th><th></th></tr></thead><tbody>' +
+      list.map(function(r){
+        var canConfirm = r.status !== 'confirmed' && r.status !== 'rejected' && !r.flag;
+        var canReject = r.status !== 'confirmed' && r.status !== 'rejected';
+        return '<tr' + (r.flag ? ' style="background:#FFF8F8"' : '') + '><td><span class="rowlink" data-open="' + r.id + '">' + P.esc(r.title) + '</span>' + (r.flag ? '<div><span class="status st-risk" style="margin-top:5px">флаг антифрода</span></div>' : '') + '</td>' +
+          '<td>' + P.esc(r.disc) + '</td><td>' + P.esc(P.userName(r.studentId)) + '</td><td>' + (r.mentorId ? P.esc(P.userName(r.mentorId)) : '—') + '</td>' +
+          '<td><b>+' + r.points + '</b></td><td>' + stPill(r.status) + '</td>' +
+          '<td class="acts">' + (canConfirm ? '<button class="btn-mini" data-ok="' + r.id + '">Подтвердить</button> ' : '') + (canReject ? '<button class="btn-mini ghost" data-rej="' + r.id + '">Отклонить</button>' : '') + '</td></tr>';
+      }).join('') +
+      '</tbody></table></div></div>';
+  }
+
+  function bindRequests(){
+    document.querySelectorAll('[data-rf]').forEach(function(b){
+      b.addEventListener('click', function(){ reqFilter = b.getAttribute('data-rf'); render(); });
+    });
+    document.querySelectorAll('[data-ok]').forEach(function(b){
+      b.addEventListener('click', function(){
+        P.confirmRequest(b.getAttribute('data-ok'), true);
+        P.toast('Запрос подтверждён, баллы начислены наставнику'); render();
+      });
+    });
+    document.querySelectorAll('[data-rej]').forEach(function(b){
+      b.addEventListener('click', function(){
+        P.rejectRequest(b.getAttribute('data-rej'));
+        P.toast('Запрос отклонён', 'warn'); render();
+      });
+    });
+    document.querySelectorAll('[data-open]').forEach(function(l){
+      l.addEventListener('click', function(){ openReq(l.getAttribute('data-open')); });
+    });
+  }
+
+  /* ---------- модалка запроса ---------- */
+  function openReq(id){
+    var r = P.requests().find(function(x){ return x.id === id; });
+    if(!r) return;
+    var back = document.createElement('div');
+    back.className = 'modal-back';
+    back.innerHTML = '<div class="modal" style="position:relative">' +
+      '<button class="mclose">×</button>' +
+      '<h3>' + P.esc(r.title) + '</h3>' + stPill(r.status) +
+      '<div class="mgrid">' +
+      '<div class="mitem"><span>Дисциплина</span><b>' + P.esc(r.disc) + '</b></div>' +
+      '<div class="mitem"><span>Срок</span><b>' + P.esc(r.deadline) + '</b></div>' +
+      '<div class="mitem"><span>Студент</span><b>' + P.esc(P.userName(r.studentId)) + '</b></div>' +
+      '<div class="mitem"><span>Наставник</span><b>' + (r.mentorId ? P.esc(P.userName(r.mentorId)) : '—') + '</b></div>' +
+      '<div class="mitem"><span>Баллы за запрос</span><b>+' + r.points + '</b></div>' +
+      '<div class="mitem"><span>Создан</span><b>' + P.esc(r.date) + '</b></div>' +
+      '</div>' +
+      '<div class="mitem" style="margin-bottom:14px"><span>Описание</span><b style="font-weight:600">' + P.esc(r.detail || '—') + '</b></div>' +
+      (r.flag ? '<div class="form-err show">Внимание: по этому запросу есть активный флаг антифрода. Проверьте раздел «Антифрод» перед подтверждением.</div>' : '') +
+      (r.status !== 'confirmed' && r.status !== 'rejected' ? '<div style="display:flex;gap:10px"><button class="btn btn-teal" data-ok="' + r.id + '" style="flex:1;justify-content:center">Подтвердить</button><button class="btn-link btn-danger" data-rej="' + r.id + '" style="height:52px">Отклонить</button></div>' : '') +
+      '</div>';
+    document.body.appendChild(back);
+    requestAnimationFrame(function(){ back.classList.add('open'); });
+    back.querySelector('.mclose').addEventListener('click', function(){ back.remove(); });
+    back.addEventListener('click', function(e){ if(e.target === back) back.remove(); });
+    back.querySelectorAll('[data-ok]').forEach(function(b){ b.addEventListener('click', function(){ P.confirmRequest(b.getAttribute('data-ok'), true); back.remove(); P.toast('Запрос подтверждён'); render(); }); });
+    back.querySelectorAll('[data-rej]').forEach(function(b){ b.addEventListener('click', function(){ P.rejectRequest(b.getAttribute('data-rej')); back.remove(); P.toast('Запрос отклонён', 'warn'); render(); }); });
+  }
+
+  /* ---------- антифрод ---------- */
+  function fraudView(){
+    var fs = P.flags();
+    if(!fs.length) return '<div class="empty"><b>Флагов нет</b><p>Антифрод не выявил подозрительной активности.</p></div>';
+    return fs.map(function(f){
+      var resolved = !!f.action;
+      return '<div class="flag-card' + (resolved ? ' resolved' : '') + '">' +
+        '<div class="fhead"><b>' + P.esc(f.pair) + '</b><span class="sev">' + P.esc(f.sev) + '</span>' + (resolved ? '<span class="status st-ok">' + (f.action === 'ok' ? 'Проверено — нарушения нет' : 'Баллы списаны') + '</span>' : '') + '</div>' +
+        '<p>' + P.esc(f.reason) + '</p>' +
+        '<div class="fmeta">' + f.meta.map(function(m){ return '<div>• ' + P.esc(m) + '</div>'; }).join('') + '</div>' +
+        (resolved ? '' : '<div style="display:flex;gap:10px;flex-wrap:wrap">' +
+          '<button class="btn-mini ghost" data-fok="' + f.id + '">Проверено — нарушения нет</button>' +
+          '<button class="btn-mini" style="background:#D65A5A" data-fcharge="' + f.id + '">Подтвердить нарушение и списать баллы</button></div>') +
+        '</div>';
+    }).join('') +
+    '<div class="panel pnote">Антифрод помечает пары с высокой частотой взаимодействий, фиктивные запросы и ночную взаимную активность. Решение всегда принимает модератор — автоматических списаний нет.</div>';
+  }
+
+  function bindFraud(){
+    document.querySelectorAll('[data-fok]').forEach(function(b){
+      b.addEventListener('click', function(){
+        P.setFraud(b.getAttribute('data-fok'), 'ok');
+        P.toast('Флаг закрыт: нарушения не подтверждено');
+        render();
+      });
+    });
+    document.querySelectorAll('[data-fcharge]').forEach(function(b){
+      b.addEventListener('click', function(){
+        var fid = b.getAttribute('data-fcharge');
+        var f = P.flags().find(function(x){ return x.id === fid; });
+        P.setFraud(fid, 'charge');
+        if(fid === 'f1') P.addPoints('u4', -80, 'Списание антифродом: флаг ' + fid.toUpperCase());
+        if(fid === 'f3') P.addPoints('u5', -40, 'Списание антифродом: флаг ' + fid.toUpperCase());
+        P.toast('Нарушение подтверждено, баллы списаны у участников пары', 'warn');
+        render();
+      });
+    });
+  }
+
+  /* ---------- аналитика ---------- */
+  function analyticsView(){
+    var A = P.ANALYTICS;
+    return '<div class="g2-cols">' +
+      '<div class="panel"><h3>Запросы по дисциплинам</h3><div class="psub">Все закрытые и открытые запросы пилота</div>' + barsHTML(A.byDisc) + '</div>' +
+      '<div class="panel"><h3>Распределение по курсам</h3><div class="psub">Доля младшекурсников — KPI гранта ≥ 50%</div>' + donutHTML(A.byCourse, ['#0E9384', '#F5A524', '#6D5BD0'], 'аудитории, %') +
+      '<div class="pnote">Младшекурсники (1–3 курс) составляют <b style="color:var(--teal-deep)">' + (A.byCourse[0].n + A.byCourse[1].n + A.byCourse[2].n) + '%</b> аудитории — целевой показатель выполнен.</div></div>' +
+      '</div>' +
+      '<div class="panel"><h3>Учебная тревожность: до и после</h3><div class="psub">Шкала Спилбергера–Ханина, средний балл по курсам (×10 для наглядности)</div>' +
+      '<div class="bars" style="height:170px">' +
+      A.anxiety.map(function(a){
+        return '<div class="bar m-amber" style="min-width:90px;flex:1"><div style="display:flex;gap:5px;align-items:flex-end;width:100%;justify-content:center">' +
+          '<i style="height:' + Math.round(a.before * 14) + 'px;width:26px"></i>' +
+          '<i style="height:' + Math.round(a.after * 14) + 'px;width:26px;background:linear-gradient(180deg,var(--teal),var(--teal-deep))"></i></div>' +
+          '<span style="font-size:11px"><em style="font-style:normal;color:#B36F0A">' + a.before + '</em> → <em style="font-style:normal;color:var(--teal-deep)">' + a.after + '</em><br>' + a.label + '</span></div>';
+      }).join('') + '</div>' +
+      '<div class="legend-mini"><span><i style="background:#F5A524"></i>до платформы</span><span><i style="background:#0E9384"></i>после платформы</span></div></div>' +
+      '<div class="panel"><h3>Зоны риска</h3><div class="psub">Дисциплины, где студенты чаще всего просят помощь</div>' +
+      A.risk.map(function(r){
+        return '<div style="display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-bottom:1px dashed var(--line)">' +
+          '<span class="tag t1" style="min-width:120px;text-align:center">' + P.esc(r.disc) + '</span>' +
+          '<div><b style="font-size:14px">Доля запросов: ' + r.share + ' · ' + r.trend + '</b><div style="font-size:13px;color:var(--muted);margin-top:4px">' + P.esc(r.note) + '</div></div></div>';
+      }).join('') +
+      '<div class="pnote">Данные агрегированы и обезличены: деканат видит дисциплины и тренды, но не ФИО и оценки конкретных студентов. Индивидуальные данные доступны только с согласия студента.</div></div>';
+  }
+
+  /* ---------- бонусы ---------- */
+  function bonusesView(){
+    var bs = P.bonuses();
+    return '<div class="panel"><h3>Каталог бонусов наставников</h3><div class="psub">Обмен баллов на внутривузовские вознаграждения по соглашению с администрацией АГМУ</div>' +
+      '<div class="table-wrap" style="margin-bottom:0"><table class="tbl"><thead><tr><th>Бонус</th><th>Стоимость</th><th>Статус</th><th></th></tr></thead><tbody>' +
+      bs.map(function(b){
+        return '<tr><td><b>' + P.esc(b.title) + '</b><br><span style="font-size:12px;color:var(--muted)">' + P.esc(b.desc) + '</span></td>' +
+          '<td><b class="bcost">' + b.cost + ' б.</b></td>' +
+          '<td>' + (b.paused ? '<span class="status st-pending">На паузе</span>' : '<span class="status st-ok">Активен</span>') + '</td>' +
+          '<td class="acts"><button class="btn-mini ' + (b.paused ? '' : 'ghost') + '" data-toggle="' + b.id + '">' + (b.paused ? 'Включить' : 'Поставить на паузу') + '</button></td></tr>';
+      }).join('') +
+      '</tbody></table></div></div>' +
+      '<div class="panel pnote">Пауза используется в конце семестра, когда резерв бонусов исчерпан: пользователи видят статус, но обмен временно недоступен. Стоимость и состав каталога утверждаются студенческим советом и администрацией вуза.</div>';
+  }
+
+  function bindBonuses(){
+    document.querySelectorAll('[data-toggle]').forEach(function(b){
+      b.addEventListener('click', function(){
+        P.toggleBonus(b.getAttribute('data-toggle'));
+        P.toast('Статус бонуса изменён', 'warn');
+        render();
+      });
+    });
+  }
+
+  /* ---------- диспетчер ---------- */
+  function render(){
+    var v = document.getElementById('view');
+    if(current === 'dash'){ v.innerHTML = dashView(); bindRequests(); document.querySelectorAll('[data-goto]').forEach(function(b){ b.addEventListener('click', function(){ current = b.getAttribute('data-goto'); paint(); }); }); }
+    else if(current === 'users'){ v.innerHTML = usersView(); bindUsers(); }
+    else if(current === 'requests'){ v.innerHTML = requestsView(); bindRequests(); }
+    else if(current === 'fraud'){ v.innerHTML = fraudView(); bindFraud(); }
+    else if(current === 'analytics'){ v.innerHTML = analyticsView(); }
+    else if(current === 'bonuses'){ v.innerHTML = bonusesView(); bindBonuses(); }
+  }
+  paint();
+})();
+</script>
+</body>
+</html>

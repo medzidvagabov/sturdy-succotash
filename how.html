@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Как это работает — платформа «Помогалка»</title>
+<meta name="description" content="Подробно о работе платформы студенческой взаимопомощи «Помогалка»: роли, шаги, баллы, бонусы и правила академической честности.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230E9384'/%3E%3Ctext x='32' y='44' font-size='34' font-family='Arial' font-weight='bold' fill='white' text-anchor='middle'%3E%D0%9F%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/css/style.css">
+<script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+<header id="siteHeader">
+  <div class="wrap nav">
+    <a class="logo" href="index.html">
+      <span class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12.5V17c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5"/></svg>
+      </span>
+      Помогалка
+    </a>
+    <nav class="menu">
+      <a href="index.html#about">О проекте</a>
+      <a href="index.html#goals">Цели</a>
+      <a href="index.html#plan">Этапы</a>
+      <a href="index.html#budget">Бюджет</a>
+      <a href="index.html#team">Команда</a>
+      <a href="index.html#faq">Вопросы</a>
+    </nav>
+    <a class="nav-cta" href="login.html">Войти в платформу</a>
+    <button class="burger" id="burger" aria-label="Открыть меню" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</header>
+<nav class="mobile-menu" id="mobileMenu">
+  <a href="index.html#about">О проекте</a>
+  <a href="index.html#goals">Цели</a>
+  <a href="index.html#plan">Этапы</a>
+  <a href="index.html#budget">Бюджет</a>
+  <a href="index.html#team">Команда</a>
+  <a href="index.html#faq">Вопросы</a>
+  <a href="login.html" style="background:var(--teal);color:#fff;text-align:center;font-weight:800">Войти в платформу</a>
+</nav>
+
+<main id="top">
+<section class="hero" style="padding:150px 0 70px">
+  <div class="wrap" style="grid-template-columns:1fr;max-width:860px">
+    <div class="hero-badges">
+      <span class="badge"><span class="dot"></span>Роли · шаги · баллы · правила</span>
+    </div>
+    <h1>Как работает <span class="accent">«Помогалка»</span></h1>
+    <p class="lead">Платформа соединяет младшекурсников, которым нужна поддержка, и старшекурсников, готовых делиться опытом. Всё — по понятным правилам и с честной системой баллов.</p>
+    <div class="hero-actions" style="margin-bottom:0">
+      <a class="btn btn-teal" href="login.html">Попробовать демо <span class="arr">→</span></a>
+      <a class="btn btn-ghost" href="#steps">К шагам платформы</a>
+    </div>
+  </div>
+</section>
+
+<!-- РОЛИ -->
+<section style="padding-top:70px">
+  <div class="wrap">
+    <div class="center reveal">
+      <span class="overline">Две роли</span>
+      <h2>Каждому — свой путь на платформе</h2>
+    </div>
+    <div class="grid g2" style="margin-top:44px;max-width:900px;margin-left:auto;margin-right:auto">
+      <div class="card reveal">
+        <span class="ico i-teal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12.5V17c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5"/></svg></span>
+        <h3>Студент 1–3 курса</h3>
+        <p>Публикует запрос на разбор темы, получает наставника в течение суток, подтверждает результат. Участие бесплатное и не требует установки приложений.</p>
+        <ul style="margin-top:14px;display:grid;gap:8px">
+          <li style="font-size:13.5px;color:var(--muted);padding-left:22px;position:relative;font-weight:600"><span style="position:absolute;left:0;color:var(--teal);font-weight:800">✓</span>Анатомия, гистология, биохимия, фармакология и другие дисциплины</li>
+          <li style="font-size:13.5px;color:var(--muted);padding-left:22px;position:relative;font-weight:600"><span style="position:absolute;left:0;color:var(--teal);font-weight:800">✓</span>Онлайн или лично в кампусе АГМУ</li>
+          <li style="font-size:13.5px;color:var(--muted);padding-left:22px;position:relative;font-weight:600"><span style="position:absolute;left:0;color:var(--teal);font-weight:800">✓</span>Отклик — не более 24 часов</li>
+        </ul>
+      </div>
+      <div class="card reveal" style="transition-delay:.1s">
+        <span class="ico i-amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.9 6.3L21 9.3l-4.5 4.4L17.8 20 12 16.8 6.2 20l1.3-6.3L3 9.3l6.1-1z"/></svg></span>
+        <h3>Студент 4–6 курса или ординатор</h3>
+        <p>Откликается на запросы по своим дисциплинам, разбирает темы и получает баллы за подтверждённую помощь. Баллы обмениваются на реальные бонусы вуза.</p>
+        <ul style="margin-top:14px;display:grid;gap:8px">
+          <li style="font-size:13.5px;color:var(--muted);padding-left:22px;position:relative;font-weight:600"><span style="position:absolute;left:0;color:var(--teal);font-weight:800">✓</span>Гибкий график: берёте только те запросы, которые удобны</li>
+          <li style="font-size:13.5px;color:var(--muted);padding-left:22px;position:relative;font-weight:600"><span style="position:absolute;left:0;color:var(--teal);font-weight:800">✓</span>Рейтинг и отзыв повышают приоритет при подборе</li>
+          <li style="font-size:13.5px;color:var(--muted);padding-left:22px;position:relative;font-weight:600"><span style="position:absolute;left:0;color:var(--teal);font-weight:800">✓</span>Волонтёрские часы, мерч, скидки и приоритет практики</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ШАГИ -->
+<section id="steps" style="background:var(--surface)">
+  <div class="wrap">
+    <div class="center reveal">
+      <span class="overline">Пять шагов</span>
+      <h2>От вопроса до бонуса</h2>
+    </div>
+    <div class="grid g3" style="margin-top:44px">
+      <div class="card reveal"><span class="ico i-teal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></span><h3>1. Публикация запроса</h3><p>Студент указывает дисциплину, тему и срок. Запрос появляется на общей доске — это занимает около минуты.</p></div>
+      <div class="card reveal" style="transition-delay:.06s"><span class="ico i-violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg></span><h3>2. Подбор наставника</h3><p>Алгоритм ранжирует наставников по дисциплине, оценкам, отзывам и доступному времени. Студент может выбрать из нескольких кандидатов.</p></div>
+      <div class="card reveal" style="transition-delay:.12s"><span class="ico i-amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></span><h3>3. Сессия</h3><p>Наставник разбирает тему: объясняет материал, отвечает на вопросы, даёт чек-лист подготовки. 45–60 минут онлайн или в кампусе.</p></div>
+      <div class="card reveal" style="transition-delay:.18s"><span class="ico i-navy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg></span><h3>4. Подтверждение</h3><p>Получатель подтверждает, что тема разобрана. Только после этого запрос закрывается — качество помощи измеримо.</p></div>
+      <div class="card reveal" style="transition-delay:.24s"><span class="ico i-amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.9 6.3L21 9.3l-4.5 4.4L17.8 20 12 16.8 6.2 20l1.3-6.3L3 9.3l6.1-1z"/></svg></span><h3>5. Баллы и обмен</h3><p>Наставнику начисляются баллы (30–45 за сессию). Их обменивают на бонусы: волонтёрские часы, мерч, скидки, приоритет практики.</p></div>
+      <div class="card reveal" style="transition-delay:.3s"><span class="ico i-teal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-3.5 8-10V5l-8-3-8 3v7c0 6.5 8 10 8 10z"/><path d="M9 11.5l2 2 4-4.5"/></svg></span><h3>Защита антифродом</h3><p>Каждое начисление проверяет модуль антифрода: взаимные накрутки, фиктивные запросы и повторяющиеся пары уходят на проверку модератору.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ПРАВИЛА -->
+<section>
+  <div class="wrap">
+    <div class="center reveal">
+      <span class="overline">Правила</span>
+      <h2>Академическая честность — основа платформы</h2>
+      <p class="lead">Правила утверждены совместно с администрацией Астраханского ГМУ. «Помогалка» — про передачу знаний, а не про выполнение работы за студентов.</p>
+    </div>
+    <div class="grid g2" style="margin-top:44px">
+      <div class="card reveal" style="border-left:4px solid var(--teal)">
+        <h3>✓ Разрешено</h3>
+        <p>Разбор тем и концепций, подготовка к экзаменам и семинарам, объяснение методик решения, совместный разбор ошибок, помощь в понимании терминологии, чек-листы подготовки.</p>
+      </div>
+      <div class="card reveal" style="border-left:4px solid #D65A5A">
+        <h3 style="color:#B23A3A">✗ Запрещено</h3>
+        <p>Написание рефератов, отчётов и историй болезни за студента, выполнение заданий целиком, сдача экзаменов вместо студента, обмен баллами за «ложные» подтверждения.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- БАЛЛЫ -->
+<section style="background:linear-gradient(180deg,#F4F7FA,#EFF4F7)">
+  <div class="wrap">
+    <div class="center reveal">
+      <span class="overline">Цена помощи</span>
+      <h2>Сколько стоят баллы и бонусы</h2>
+    </div>
+    <div class="panel reveal" style="margin-top:44px">
+      <div class="table-wrap" style="margin-bottom:0">
+        <table class="tbl">
+          <thead><tr><th>Бонус</th><th>Что даёт</th><th>Стоимость в баллах</th></tr></thead>
+          <tbody>
+            <tr><td><b>Волонтёрские часы</b></td><td>Зачёт часа в волонтёрское дело через вуз</td><td><b>60</b></td></tr>
+            <tr><td><b>Сертификат наставника</b></td><td>Именной сертификат с дисциплинами и числом сессий</td><td><b>80</b></td></tr>
+            <tr><td><b>Кружка АГМУ</b></td><td>Сувенир для активных наставников</td><td><b>90</b></td></tr>
+            <tr><td><b>Футболка наставника</b></td><td>Лимитированный мерч семестра</td><td><b>150</b></td></tr>
+            <tr><td><b>Скидка на доп. образование</b></td><td>10% при оплате дополнительного образования в АГМУ</td><td><b>200</b></td></tr>
+            <tr><td><b>Приоритет практики</b></td><td>Приоритетное право выбора баз практики</td><td><b>250</b></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="center" style="margin-top:36px">
+      <a class="btn btn-teal" href="login.html">Попробовать демо платформы <span class="arr">→</span></a>
+      <div style="margin-top:14px"><a href="index.html" style="font-size:13.5px;font-weight:700;color:var(--muted)">← Вернуться на главную</a></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer style="margin-top:40px">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="logo" href="index.html">
+          <span class="logo-mark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12.5V17c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5"/></svg>
+          </span>
+          Помогалка
+        </a>
+        <p>Образовательная платформа «Помогалка»: биржа студенческой взаимопомощи Астраханского ГМУ. Проект номинирован на конкурс Росмолодёжь.Гранты в номинации #делись_опытом.</p>
+      </div>
+      <div>
+        <h4>Платформа</h4>
+        <ul>
+          <li><a href="how.html">Как это работает</a></li>
+          <li><a href="login.html">Личный кабинет</a></li>
+          <li><a href="admin.html">Админ-панель</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Контакты</h4>
+        <ul>
+          <li>г. Астрахань, ул. Бакинская, д. 121<br>Астраханский ГМУ</li>
+          <li>г. Астрахань, ул. Шаумяна, д. 18<br>учебный корпус</li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2025–2026 · Проект «Помогалка» · Астраханский ГМУ</span>
+      <span>Демо-версия платформы. Все данные стенда вымышлены.</span>
+    </div>
+  </div>
+</footer>
+
+<button class="totop" id="toTop" aria-label="Наверх">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
+<script>
+(function(){
+  var header = document.getElementById('siteHeader');
+  var toTop = document.getElementById('toTop');
+  function onScroll(){
+    header.classList.toggle('scrolled', window.scrollY > 40);
+    toTop.classList.toggle('show', window.scrollY > 700);
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+  toTop.addEventListener('click', function(){ window.scrollTo({top:0, behavior:'smooth'}); });
+
+  var burger = document.getElementById('burger'), mm = document.getElementById('mobileMenu');
+  burger.addEventListener('click', function(){
+    var open = mm.classList.toggle('open');
+    burger.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', open);
+  });
+  mm.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){ mm.classList.remove('open'); burger.classList.remove('open'); }); });
+
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('on'); io.unobserve(e.target); } });
+  }, {threshold:.12, rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+})();
+</script>
+</body>
+</html>

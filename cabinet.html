@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Личный кабинет — «Помогалка»</title>
+<meta name="description" content="Кабинет студента и наставника платформы «Помогалка»: запросы, сессии, баллы и бонусы.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230E9384'/%3E%3Ctext x='32' y='44' font-size='34' font-family='Arial' font-weight='bold' fill='white' text-anchor='middle'%3E%D0%9F%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/css/style.css">
+<script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+<div class="appbar">
+  <div class="wrap">
+    <a class="app-logo" href="index.html">
+      <span class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12.5V17c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5"/></svg>
+      </span>
+      Помогалка
+    </a>
+    <div class="userchip" id="userChip"></div>
+    <button class="btn-link btn-danger" id="btnLogout">Выйти</button>
+  </div>
+</div>
+
+<main class="wrap" style="padding-bottom:70px">
+  <div class="tabs" id="tabs" role="tablist"></div>
+  <div id="view"></div>
+</main>
+
+<script src="assets/js/data.js"></script>
+<script>
+(function(){
+  var P = window.POM;
+  var user = P.current();
+  if(!user){ window.location.href = 'login.html'; return; }
+
+  var STATUS = {
+    new:      { label: 'Новый',                cls: 'st-new' },
+    inwork:   { label: 'В работе',             cls: 'st-inwork' },
+    pending:  { label: 'Ждёт подтверждения',   cls: 'st-pending' },
+    confirmed:{ label: 'Подтверждён',          cls: 'st-ok' },
+    rejected: { label: 'Отклонён',             cls: 'st-rej' }
+  };
+  function stPill(s){ return '<span class="status ' + STATUS[s].cls + '">' + STATUS[s].label + '</span>'; }
+
+  /* ---------- шапка ---------- */
+  document.getElementById('userChip').innerHTML =
+    (user.points > 0 ? '<span class="pointchip">★ ' + (user.points || 0).toLocaleString('ru-RU') + ' баллов</span>' : '') +
+    (user.role === 'admin' || user.role === 'moderator' ? '<a class="btn-link" href="admin.html">Админ-панель</a>' : '') +
+    '<div class="uinfo"><b>' + P.esc(user.name) + '</b><span>' + P.ROLE_NAMES[user.role] + ' · ' + P.esc(user.course) + '</span></div>' +
+    P.ava(user.name);
+  document.getElementById('btnLogout').addEventListener('click', function(){
+    P.logout(); window.location.href = 'login.html';
+  });
+
+  /* ---------- табы ---------- */
+  var tabs;
+  if(user.role === 'student'){
+    tabs = [['requests','Мои запросы'],['create','Новый запрос'],['mentors','Наставники'],['profile','Профиль']];
+  } else {
+    tabs = [['board','Доска запросов'],['sessions','Мои сессии'],['points','Баллы и бонусы'],['rating','Рейтинг'],['profile','Профиль']];
+  }
+  if(user.role === 'admin' || user.role === 'moderator'){
+    tabs.unshift(['__admin','Админ-панель']);
+  }
+  var currentTab = tabs[0][0];
+  var tabsEl = document.getElementById('tabs');
+  function renderTabs(){
+    tabsEl.innerHTML = tabs.map(function(t){
+      if(t[0] === '__admin') return '<a class="tab" style="background:var(--amber);border-color:var(--amber);color:#5C3D00" href="admin.html">⚙ Админ-панель</a>';
+      return '<button class="tab' + (t[0] === currentTab ? ' active' : '') + '" data-tab="' + t[0] + '" role="tab">' + t[1] + '</button>';
+    }).join('');
+    tabsEl.querySelectorAll('.tab[data-tab]').forEach(function(b){
+      b.addEventListener('click', function(){ currentTab = b.getAttribute('data-tab'); renderTabs(); renderView(); window.scrollTo({top:0}); });
+    });
+  }
+
+  /* ---------- вьюхи ---------- */
+  var view = document.getElementById('view');
+
+  function reqCard(r, opts){
+    opts = opts || {};
+    var acts = '';
+    if(opts.confirm) acts += '<button class="btn-mini" data-act="confirm" data-id="' + r.id + '">Подтвердить помощь</button>';
+    if(opts.cancel) acts += '<button class="btn-mini ghost" data-act="cancel" data-id="' + r.id + '">Отменить</button>';
+    if(opts.take) acts += '<button class="btn-mini" data-act="take" data-id="' + r.id + '">Взять в работу</button>';
+    if(opts.send) acts += '<button class="btn-mini warn" data-act="send" data-id="' + r.id + '">Отправить на подтверждение</button>';
+    var mentor = r.mentorId ? '<span>Наставник: <b style="color:var(--ink)">' + P.esc(P.userName(r.mentorId)) + '</b></span>' : '<span>Наставник пока не откликнулся</span>';
+    return '<div class="req-card">' +
+      '<div class="rhead"><b>' + P.esc(r.title) + '</b>' + stPill(r.status) + '</div>' +
+      '<div class="rtags"><span class="tag t1">' + P.esc(r.disc) + '</span><span class="tag t2">до ' + P.esc(r.deadline) + '</span><span class="tag" style="background:var(--teal-soft);color:var(--teal-deep)">+' + r.points + ' баллов</span></div>' +
+      (r.detail ? '<p>' + P.esc(r.detail) + '</p>' : '') +
+      '<div class="rfoot"><span>№ ' + P.esc(r.id.toUpperCase()) + ' · от ' + P.esc(r.date) + '</span>' + mentor + (acts ? '<div class="right">' + acts + '</div>' : '') + '</div>' +
+      '</div>';
+  }
+
+  function bindActs(){
+    view.querySelectorAll('[data-act]').forEach(function(b){
+      b.addEventListener('click', function(){
+        var id = b.getAttribute('data-id'), act = b.getAttribute('data-act');
+        if(act === 'take'){ P.takeRequest(id); P.toast('Запрос взят в работу. Студент увидит вас как наставника'); }
+        if(act === 'send'){ P.sendToConfirm(id); P.toast('Запрос отправлен на подтверждение студенту', 'warn'); }
+        if(act === 'confirm'){ var r = P.requests().find(function(x){ return x.id === id; }); P.confirmRequest(id); P.toast('Помощь подтверждена — наставник получил +' + (r.points || 40) + ' баллов'); }
+        if(act === 'cancel'){ P.cancelRequest(id); P.toast('Запрос отменён', 'warn'); }
+        renderView();
+      });
+    });
+  }
+
+  function studentRequestsView(){
+    var mine = P.studentRequests(user.id);
+    if(!mine.length){
+      return '<div class="empty"><div class="eico"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>' +
+        '<b>Пока нет ни одного запроса</b><p>Опишите тему, в которой нужна помощь, — наставники откликнутся в течение суток.</p>' +
+        '<button class="btn btn-teal" style="margin-top:18px" data-go="create">Создать первый запрос</button></div>';
+    }
+    return '<div class="req-list">' + mine.map(function(r){
+      var opts = {};
+      if(r.status === 'pending') opts.confirm = true;
+      if(r.status === 'new') opts.cancel = true;
+      return reqCard(r, opts);
+    }).join('') + '</div>';
+  }
+
+  function createFormView(){
+    var opts = P.DISCIPLINES.map(function(d){ return '<option' + (d === 'Анатомия' ? ' selected' : '') + '>' + d + '</option>'; }).join('');
+    return '<div class="form-card" style="max-width:640px">' +
+      '<h3>Новый учебный запрос</h3>' +
+      '<div class="field"><label>Дисциплина</label><select id="qDisc">' + opts + '</select></div>' +
+      '<div class="field"><label>Тема запроса</label><input id="qTitle" placeholder="Например: разбор темы «плечевое сплетение»"><div class="hint">Формулируйте как тему для разбора — помощь с написанием работ запрещена правилами</div></div>' +
+      '<div class="field"><label>Подробности (необязательно)</label><textarea id="qDetail" placeholder="Что именно вызывает вопросы, что уже пробовали"></textarea></div>' +
+      '<div class="f2"><div class="field"><label>Нужно до</label><input id="qDeadline" type="date"></div>' +
+      '<div class="field"><label>Формат</label><select id="qFormat"><option>Онлайн</option><option>Лично в кампусе АГМУ</option><option>Любой</option></select></div></div>' +
+      '<button class="btn btn-teal" id="qSubmit" style="width:100%;justify-content:center">Опубликовать запрос <span class="arr">→</span></button>' +
+      '<div class="panel pnote" style="margin-top:18px">Среднее время до первого отклика наставника — не более 24 часов. По правилам платформы наставники разбирают темы, а не выполняют работу за вас.</div>' +
+      '</div>';
+  }
+
+  function bindCreate(){
+    document.getElementById('qSubmit').addEventListener('click', function(){
+      var disc = document.getElementById('qDisc').value;
+      var title = document.getElementById('qTitle').value.trim();
+      if(title.length < 5){ P.toast('Опишите тему подробнее (минимум 5 символов)', 'err'); return; }
+      var dl = document.getElementById('qDeadline').value;
+      if(dl) { dl = dl.split('-').reverse().join('.'); }
+      P.createRequest({ disc: disc, title: title, detail: document.getElementById('qDetail').value.trim(), deadline: dl || 'в течение недели' });
+      P.toast('Запрос опубликован! Наставники уже увидели его на доске');
+      currentTab = 'requests'; renderTabs(); renderView();
+    });
+    var go = view.querySelector('[data-go="create"]');
+    if(go) go.addEventListener('click', function(){ currentTab = 'create'; renderTabs(); renderView(); });
+  }
+
+  function leaderboardView(){
+    var mentors = P.users().filter(function(u){ return u.role === 'mentor' || u.role === 'admin'; })
+      .sort(function(a,b){ return (b.points||0) - (a.points||0); });
+    return '<div class="panel leader" style="max-width:760px">' +
+      '<h3>Рейтинг наставников семестра</h3><div class="psub">Баллы начисляются только за помощь, подтверждённую получателем. Топ-10 получают мерч АГМУ.</div>' +
+      mentors.slice(0, 8).map(function(u, i){
+        return '<div class="lrow' + (u.id === user.id ? ' me' : '') + '"><span class="lpos">' + (i + 1) + '</span>' + P.ava(u.name) +
+          '<div><b>' + P.esc(u.name) + '</b><span>' + P.esc(u.course) + ' · ' + (u.discs || []).join(', ') + '</span></div>' +
+          '<span class="lstar">★ ' + (u.rating || '—') + '</span><span class="lpts">' + (u.points || 0) + ' б.</span></div>';
+      }).join('') + '</div>';
+  }
+
+  function boardView(){
+    var open = P.requests().filter(function(r){ return r.status === 'new'; });
+    if(!open.length) return '<div class="empty"><b>Свободных запросов нет</b><p>Все запросы уже в работе — загляните позже.</p></div>';
+    return '<div class="req-list">' + open.map(function(r){ return reqCard(r, { take: true }); }).join('') + '</div>';
+  }
+
+  function sessionsView(){
+    var mine = P.mentorRequests(user.id);
+    if(!mine.length) return '<div class="empty"><div class="eico"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 17l5-6 4 3 6-8"/><path d="M3 21h18"/></svg></div>' +
+      '<b>Сессий пока нет</b><p>Откликнитесь на запрос со «Доски запросов» — студенты ждут помощи по вашей дисциплине.</p></div>';
+    return '<div class="req-list">' + mine.map(function(r){
+      var opts = {};
+      if(r.status === 'inwork') opts.send = true;
+      return reqCard(r, opts);
+    }).join('') + '</div>';
+  }
+
+  function pointsView(){
+    var fresh = P.users().find(function(u){ return u.id === user.id; });
+    var pts = fresh.points || 0;
+    var hist = P.pointsHistory(user.id);
+    var nextLevel = [80, 150, 250, 500].find(function(n){ return pts < n; }) || 500;
+    var prevLevel = [0, 80, 150, 250].reverse().find(function(n){ return n < pts; }) || 0;
+    var prog = Math.round((pts - prevLevel) / (nextLevel - prevLevel) * 100);
+    var bonuses = P.bonuses();
+    return '<div class="panel"><div class="balance-row">' +
+      '<div><div class="bal-coin">' + pts.toLocaleString('ru-RU') + '<small>баллов</small></div></div>' +
+      '<div><h3>Баллы за подтверждённую помощь</h3><div class="psub">До уровня «' + nextLevel + ' б. — наставник месяца» осталось ' + (nextLevel - pts) + ' баллов</div>' +
+      '<div style="height:10px;background:var(--bg);border-radius:6px;overflow:hidden"><div style="width:' + Math.max(prog, 4) + '%;height:100%;background:linear-gradient(90deg,var(--teal),var(--amber));border-radius:6px;transition:width .5s"></div></div>' +
+      '<div class="pnote" style="margin-top:14px">Начисление проверяет антифрод: баллы приходят только после подтверждения студентом. Подозрительные схемы блокируются.</div></div>' +
+      '</div></div>' +
+      '<div class="g2-cols">' +
+      '<div class="panel"><h3>Каталог бонусов</h3><div class="psub">Обмен доступен для активных наставников по соглашению с администрацией АГМУ.</div>' +
+      '<div class="bonus-grid">' + bonuses.map(function(b){
+        return '<div class="bonus-card' + (b.paused ? ' paused' : '') + '"><b>' + P.esc(b.title) + '</b><span>' + P.esc(b.desc) + '</span>' +
+          '<div style="display:flex;align-items:center;gap:10px"><span class="bcost">' + b.cost + ' б.</span>' +
+          '<button class="btn-mini" data-bonus="' + b.id + '"' + (b.paused || pts < b.cost ? ' disabled' : '') + '>' + (b.paused ? 'Приостановлен' : 'Обменять') + '</button></div></div>';
+      }).join('') + '</div></div>' +
+      '<div class="panel"><h3>История начислений</h3><div class="psub">' + hist.length + ' операций за пилот</div>' +
+      (hist.length ? '<div class="hist">' + hist.map(function(h){
+        return '<div class="hrow"><b class="' + (h.delta >= 0 ? 'plus' : 'minus') + '">' + (h.delta >= 0 ? '+' : '') + h.delta + ' б.</b><span>' + P.esc(h.label) + '</span><span class="hdate">' + P.esc(h.date) + '</span></div>';
+      }).join('') + '</div>' : '<div class="empty" style="padding:28px"><b>История пуста</b><p>Баллы появятся после первой подтверждённой сессии.</p></div>') +
+      '</div></div>';
+  }
+
+  function bindPoints(){
+    view.querySelectorAll('[data-bonus]').forEach(function(b){
+      b.addEventListener('click', function(){
+        var res = P.exchangeBonus(b.getAttribute('data-bonus'));
+        if(res.ok){ P.toast('Бонус заказан! Координатор выдаст его в течение 3 дней'); renderView(); }
+        else P.toast(res.err, 'err');
+      });
+    });
+  }
+
+  function profileView(){
+    var isMentor = user.role !== 'student';
+    var reqs = isMentor ? P.mentorRequests(user.id) : P.studentRequests(user.id);
+    var done = reqs.filter(function(r){ return r.status === 'confirmed'; }).length;
+    var stats = isMentor
+      ? [['Сессий проведено', done], ['Баллов заработано', (user.points || 0)], ['Рейтинг', '★ ' + (user.rating || '—')]]
+      : [['Запросов создано', reqs.length], ['Успешно закрыто', done], ['Средний отклик', 'менее 24 ч']];
+    return '<div class="g2-cols">' +
+      '<div class="panel"><div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-bottom:18px">' +
+      '<span class="ava-sm ' + P.avaColor(user.name) + '" style="width:64px;height:64px;font-size:20px">' + P.initials(user.name) + '</span>' +
+      '<div><div style="font-size:20px;font-weight:800;font-family:\'Manrope\'">' + P.esc(user.name) + '</div>' +
+      '<div style="margin-top:6px"><span class="badge-role r-' + user.role + '">' + P.ROLE_NAMES[user.role] + '</span></div></div></div>' +
+      '<div class="mgrid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">' +
+      '<div class="mitem"><span>Курс</span><b>' + P.esc(user.course) + '</b></div>' +
+      '<div class="mitem"><span>Факультет</span><b>' + P.esc(user.faculty) + '</b></div>' +
+      '<div class="mitem"><span>Email</span><b>' + P.esc(user.email) + '</b></div>' +
+      (user.discs && user.discs.length ? '<div class="mitem"><span>Дисциплины</span><b>' + (user.discs || []).join(', ') + '</b></div>' : '') +
+      '</div>' +
+      '<div class="pnote">Демо-профиль хранится локально в вашем браузере. В боевой версии данные защищены по 152-ФЗ и хранятся на серверах в РФ.</div></div>' +
+      '<div class="panel"><h3>Статистика</h3><div class="psub">Ваш путь на платформе за пилотный семестр</div>' +
+      stats.map(function(s){
+        return '<div style="display:flex;justify-content:space-between;align-items:center;padding:13px 4px;border-bottom:1px dashed var(--line)"><span style="color:var(--muted);font-weight:600;font-size:14px">' + s[0] + '</span><b style="font-size:16px;color:var(--teal-deep)">' + s[1] + '</b></div>';
+      }).join('') +
+      '<button class="btn-link btn-danger" style="margin-top:20px" id="pLogout">Выйти из аккаунта</button></div></div>';
+  }
+
+  function bindProfile(){
+    var b = document.getElementById('pLogout');
+    if(b) b.addEventListener('click', function(){ P.logout(); window.location.href = 'login.html'; });
+  }
+
+  function renderView(){
+    user = P.current() || user; /* актуальные баллы и статусы */
+    if(currentTab === 'requests'){ view.innerHTML = studentRequestsView(); bindActs(); }
+    else if(currentTab === 'create'){ view.innerHTML = createFormView(); bindCreate(); }
+    else if(currentTab === 'mentors' || currentTab === 'rating'){ view.innerHTML = leaderboardView(); }
+    else if(currentTab === 'board'){ view.innerHTML = boardView(); bindActs(); }
+    else if(currentTab === 'sessions'){ view.innerHTML = sessionsView(); bindActs(); }
+    else if(currentTab === 'points'){ view.innerHTML = pointsView(); bindPoints(); }
+    else if(currentTab === 'profile'){ view.innerHTML = profileView(); bindProfile(); }
+    else { view.innerHTML = studentRequestsView(); bindActs(); }
+    if(currentTab === '__admin') window.location.href = 'admin.html';
+  }
+
+  /* заголовок кабинета */
+  var h = document.createElement('div');
+  h.style.cssText = 'margin-top:26px';
+  h.innerHTML = '<h1 style="font-family:\'Unbounded\';font-weight:600;font-size:clamp(22px,3vw,30px)">' + P.greeting() + ', ' + P.esc(user.name.split(' ')[0]) + '!</h1>' +
+    '<p class="sub">' + (user.role === 'student'
+      ? 'Нужна помощь с дисциплиной? Опишите тему — наставники-старшекурсники откликнутся в течение суток.'
+      : 'Спасибо, что делитесь опытом! Каждая подтверждённая сессия превращается в баллы и бонусы вуза.') + '</p>';
+  document.querySelector('main').insertBefore(h, document.getElementById('tabs'));
+
+  renderTabs();
+  renderView();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Вход в платформу — «Помогалка»</title>
+<meta name="description" content="Вход в демо-версию платформы студенческой взаимопомощи «Помогалка». Демо-аккаунты администраторов, наставников и студентов.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230E9384'/%3E%3Ctext x='32' y='44' font-size='34' font-family='Arial' font-weight='bold' fill='white' text-anchor='middle'%3E%D0%9F%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/css/style.css">
+<script>document.documentElement.classList.add('js');</script>
+<style>
+.login-main{padding:0 0 40px}
+.welcome{font-size:24px;font-weight:800;font-family:'Manrope';margin-bottom:4px}
+.welcome-sub{color:var(--muted);font-size:14px;margin-bottom:22px}
+</style>
+</head>
+<body>
+<div class="login-page">
+  <!-- Левая брендовая панель -->
+  <div class="login-brand">
+    <a class="logo" href="index.html">
+      <span class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12.5V17c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5"/></svg>
+      </span>
+      Помогалка
+    </a>
+    <h1>Демо-версия платформы <span class="accent">студенческой взаимопомощи</span></h1>
+    <p>Это рабочий прототип «Помогалки»: доска запросов, система баллов, антифрод и кабинет наставника. Все данные стенда — демонстрационные и сохраняются только в вашем браузере.</p>
+    <div class="lfeats">
+      <div class="lfeat">
+        <span class="lico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></span>
+        Создавайте учебные запросы и находите наставника
+      </div>
+      <div class="lfeat">
+        <span class="lico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.9 6.3L21 9.3l-4.5 4.4L17.8 20 12 16.8 6.2 20l1.3-6.3L3 9.3l6.1-1z"/></svg></span>
+        Получайте баллы за подтверждённую помощь и меняйте на бонусы
+      </div>
+      <div class="lfeat">
+        <span class="lico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-3.5 8-10V5l-8-3-8 3v7c0 6.5 8 10 8 10z"/><path d="M9 11.5l2 2 4-4.5"/></svg></span>
+        Админ-панель: модерация, антифрод и аналитика для деканата
+      </div>
+    </div>
+    <div class="demo-note">Стенд создан для конкурса Росмолодёжь.Гранты (номинация #делись_опытом). ФИО и email аккаунтов вымышлены; пароли — демонстрационные, пожалуйста, не используйте здесь настоящие пароли.</div>
+  </div>
+
+  <!-- Правая колонка: формы -->
+  <div class="login-form-col">
+    <div class="login-card">
+      <div class="seg" role="tablist">
+        <button id="segLogin" class="active" type="button">Вход</button>
+        <button id="segReg" type="button">Регистрация</button>
+      </div>
+
+      <!-- Вход -->
+      <div id="loginView">
+        <div class="welcome">Вход в кабинет</div>
+        <div class="welcome-sub">Введите email и пароль или войдите одним кликом через демо-карточки ниже.</div>
+        <form id="loginForm" novalidate>
+          <div class="form-err" id="loginErr"></div>
+          <div class="field">
+            <label for="fEmail">Email</label>
+            <input id="fEmail" type="email" autocomplete="username" placeholder="student@agmu.ru">
+          </div>
+          <div class="field">
+            <label for="fPass">Пароль</label>
+            <input id="fPass" type="password" autocomplete="current-password" placeholder="••••••••">
+          </div>
+          <button class="btn btn-teal" type="submit" style="width:100%;justify-content:center">Войти <span class="arr">→</span></button>
+        </form>
+
+        <div class="demo-block">
+          <h3>Демо-аккаунты</h3>
+          <div class="dsub">Нажмите на карточку, чтобы войти без ввода пароля.</div>
+          <div id="demoAdmins" class="demo-admins"></div>
+          <div id="demoOthers" class="demo-list"></div>
+        </div>
+      </div>
+
+      <!-- Регистрация -->
+      <div id="regView" hidden>
+        <div class="welcome">Регистрация</div>
+        <div class="welcome-sub">Демо-регистрация: аккаунт создаётся локально в вашем браузере.</div>
+        <form id="regForm" novalidate>
+          <div class="form-err" id="regErr"></div>
+          <div class="field">
+            <label for="rName">ФИО</label>
+            <input id="rName" type="text" placeholder="Иванова Анна Сергеевна">
+          </div>
+          <div class="f2">
+            <div class="field">
+              <label for="rEmail">Email</label>
+              <input id="rEmail" type="email" placeholder="you@agmu.ru">
+            </div>
+            <div class="field">
+              <label for="rPass">Пароль</label>
+              <input id="rPass" type="password" placeholder="минимум 4 символа">
+            </div>
+          </div>
+          <div class="f2">
+            <div class="field">
+              <label for="rCourse">Курс</label>
+              <select id="rCourse">
+                <option>1 курс</option><option>2 курс</option><option>3 курс</option>
+                <option>4 курс</option><option>5 курс</option><option>6 курс</option>
+                <option>Ординатор</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="rFac">Факультет</label>
+              <select id="rFac"></select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="rRole">Кто вы на платформе?</label>
+            <select id="rRole">
+              <option value="student">Студент младших курсов — ищу помощь</option>
+              <option value="mentor">Старшекурсник — хочу стать наставником</option>
+            </select>
+          </div>
+          <button class="btn btn-teal" type="submit" style="width:100%;justify-content:center">Создать аккаунт <span class="arr">→</span></button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/data.js"></script>
+<script>
+(function(){
+  var P = window.POM;
+  /* факультеты */
+  var facSel = document.getElementById('rFac');
+  P.FACULTIES.forEach(function(f){ var o = document.createElement('option'); o.textContent = f; facSel.appendChild(o); });
+
+  /* табы вход/регистрация */
+  var segL = document.getElementById('segLogin'), segR = document.getElementById('segReg');
+  var lv = document.getElementById('loginView'), rv = document.getElementById('regView');
+  function setTab(login){
+    segL.classList.toggle('active', login); segR.classList.toggle('active', !login);
+    lv.hidden = !login; rv.hidden = login;
+  }
+  segL.addEventListener('click', function(){ setTab(true); });
+  segR.addEventListener('click', function(){ setTab(false); });
+
+  function showErr(id, msg){ var e = document.getElementById(id); e.textContent = msg; e.classList.add('show'); }
+  function hideErr(id){ document.getElementById(id).classList.remove('show'); }
+
+  function go(user){
+    P.toast('Вы вошли как ' + user.name + ' (' + P.ROLE_NAMES[user.role] + ')');
+    setTimeout(function(){
+      window.location.href = (user.role === 'admin' || user.role === 'moderator') ? 'admin.html' : 'cabinet.html';
+    }, 500);
+  }
+
+  /* форма входа */
+  document.getElementById('loginForm').addEventListener('submit', function(e){
+    e.preventDefault(); hideErr('loginErr');
+    var email = document.getElementById('fEmail').value.trim();
+    var pass = document.getElementById('fPass').value;
+    if(!email || !pass){ showErr('loginErr', 'Заполните email и пароль'); return; }
+    var res = P.login(email, pass);
+    if(!res.ok){ showErr('loginErr', res.err); return; }
+    go(res.user);
+  });
+
+  /* форма регистрации */
+  document.getElementById('regForm').addEventListener('submit', function(e){
+    e.preventDefault(); hideErr('regErr');
+    var name = document.getElementById('rName').value.trim();
+    var email = document.getElementById('rEmail').value.trim();
+    var pass = document.getElementById('rPass').value;
+    if(name.length < 3) { showErr('regErr', 'Введите ФИО'); return; }
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { showErr('regErr', 'Введите корректный email'); return; }
+    if(pass.length < 4) { showErr('regErr', 'Пароль — минимум 4 символа'); return; }
+    var res = P.register({ name: name, email: email, pass: pass,
+      course: document.getElementById('rCourse').value,
+      faculty: document.getElementById('rFac').value,
+      role: document.getElementById('rRole').value });
+    if(!res.ok){ showErr('regErr', res.err); return; }
+    P.toast('Аккаунт создан. Добро пожаловать!');
+    setTimeout(function(){ window.location.href = 'cabinet.html'; }, 500);
+  });
+
+  /* демо-карточки */
+  var admins = P.users().filter(function(u){ return u.role === 'admin'; });
+  var others = P.users().filter(function(u){ return u.role !== 'admin'; }).slice(0, 6);
+  document.getElementById('demoAdmins').innerHTML = admins.map(function(u){
+    return '<div class="demo-card" data-id="' + u.id + '" title="Войти как ' + P.esc(u.name) + '">' +
+      '<div class="drole">' + (u.role === 'admin' ? 'Администратор' : 'Модератор') + '</div>' +
+      P.ava(u.name) + '<b>' + P.esc(u.name) + '</b><span>' + P.esc(u.title) + '</span>' +
+      '<div class="dpass">' + P.esc(u.email) + ' · ' + u._pass + '</div></div>';
+  }).join('');
+  document.getElementById('demoOthers').innerHTML = others.map(function(u){
+    return '<div class="demo-row" data-id="' + u.id + '">' + P.ava(u.name) +
+      '<div><b>' + P.esc(u.name) + '</b><span>' + P.ROLE_NAMES[u.role] + ' · ' + P.esc(u.course) + ' · ' + P.esc(u.faculty) + '</span></div>' +
+      '<span class="go">Войти →</span></div>';
+  }).join('');
+  document.querySelectorAll('.demo-card, .demo-row').forEach(function(el){
+    el.addEventListener('click', function(){
+      var u = P.users().find(function(x){ return x.id === el.getAttribute('data-id'); });
+      if(!u) return;
+      localStorage.setItem('pom_session_v1', u.id);
+      go(u);
+    });
+  });
+
+  /* если уже вошли — сразу в кабинет */
+  var cur = P.current();
+  if(cur && new URLSearchParams(location.search).get('stay') !== '1'){
+    go(cur);
+  }
+})();
+</script>
+</body>
+</html>
