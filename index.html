@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>«Помогалка» — платформа студенческой взаимопомощи Астраханского ГМУ</title>
+<meta name="description" content="Образовательная платформа «Помогалка»: биржа студенческой взаимопомощи и наставничества Астраханского ГМУ. Младшекурсники задают вопросы — старшекурсники помогают и получают баллы, обмениваемые на бонусы вуза.">
+<meta property="og:title" content="«Помогалка» — биржа студенческой взаимопомощи">
+<meta property="og:description" content="Цифровая платформа наставничества студентов Астраханского ГМУ. Номинация #делись_опытом, Росмолодёжь.Гранты.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230E9384'/%3E%3Ctext x='32' y='44' font-size='34' font-family='Arial' font-weight='bold' fill='white' text-anchor='middle'%3E%D0%9F%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;600;700&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js');</script>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<header id="siteHeader">
+  <div class="wrap nav">
+    <a class="logo" href="#top" aria-label="Помогалка — на главную">
+      <span class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12.5V17c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5"/></svg>
+      </span>
+      Помогалка
+    </a>
+    <nav class="menu" id="mainMenu" aria-label="Основная навигация">
+      <a href="#about">О проекте</a>
+      <a href="#how">Как это работает</a>
+      <a href="#goals">Цели</a>
+      <a href="#plan">Этапы</a>
+      <a href="#budget">Бюджет</a>
+      <a href="#team">Команда</a>
+      <a href="#faq">Вопросы</a>
+      <a href="how.html">Как это работает</a>
+    </nav>
+    <a class="nav-cta" href="login.html">Войти в платформу</a>
+    <button class="burger" id="burger" aria-label="Открыть меню" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</header>
+<nav class="mobile-menu" id="mobileMenu" aria-label="Мобильное меню">
+  <a href="#about">О проекте</a>
+  <a href="#how">Как это работает</a>
+  <a href="#goals">Цели</a>
+  <a href="#plan">Этапы</a>
+  <a href="#budget">Бюджет</a>
+  <a href="#team">Команда</a>
+  <a href="#faq">Вопросы</a>
+  <a href="how.html">Как это работает</a>
+  <a href="login.html" style="background:var(--teal);color:#fff;text-align:center;font-weight:800">Войти в платформу</a>
+</nav>
+
+<main id="top">
+<!-- ================= HERO ================= -->
+<section class="hero" style="padding-bottom:120px">
+  <div class="wrap">
+    <div>
+      <div class="hero-badges">
+        <span class="badge"><span class="dot"></span>Росмолодёжь.Гранты · заявка 2025</span>
+        <span class="badge">Номинация&nbsp;#делись_опытом</span>
+        <span class="badge">Астраханский ГМУ</span>
+      </div>
+      <h1>«Помогалка» — <span class="accent">биржа студенческой взаимопомощи</span></h1>
+      <p class="lead">Цифровая платформа наставничества: студенты 1–3 курсов публикуют учебные запросы, старшекурсники и ординаторы помогают, а за подтверждённую помощь получают баллы и реальные бонусы вуза.</p>
+      <div class="hero-actions">
+        <a class="btn btn-teal" href="login.html">Попробовать демо платформы <span class="arr">→</span></a>
+        <a class="btn btn-ghost" href="how.html">Как это работает</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hstat"><b>12 мес.</b><span>срок реализации</span></div>
+        <div class="hstat"><b>300+</b><span>студентов на платформе</span></div>
+        <div class="hstat"><b>500+</b><span>выполненных запросов</span></div>
+        <div class="hstat"><b>−30%</b><span>учебная тревожность</span></div>
+      </div>
+    </div>
+    <div class="mock-zone" aria-hidden="true">
+      <div class="float-card fc1">
+        <span class="fc-ico" style="background:var(--teal-soft);color:var(--teal-deep)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 3v14M6 11l6 6 6-6"/></svg>
+        </span>
+        <div>Бонус зачислен<small>волонтёрские часы</small></div>
+      </div>
+      <div class="mock">
+        <div class="mock-top">
+          <span class="mlogo">П</span>
+          <div><b>Помогалка</b><small>доска учебных запросов · АГМУ</small></div>
+          <span class="live">● 312 в опросе</span>
+        </div>
+        <div class="req">
+          <div class="req-tags"><span class="tag t1">Анатомия</span><span class="tag t2">нужно к пятнице</span></div>
+          <b>Разбор темы: плечевое сплетение</b>
+          <span>Запрос студента 2 курса · леч. факультет</span>
+        </div>
+        <div class="mentor">
+          <span class="ava">МК</span>
+          <div><b>Наставник подобран</b><span>5 курс · 24 закрытых запроса · отзывам доверяют</span></div>
+          <span class="match">92% совпадение</span>
+        </div>
+        <div class="score">
+          <span class="coin">★</span>
+          <div><b>+40 баллов за подтверждённый разбор</b><span>обменяй на мерч АГМУ или приоритет практики</span></div>
+        </div>
+      </div>
+      <div class="float-card fc2">
+        <span class="fc-ico" style="background:var(--violet-soft);color:var(--violet)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 17l5-6 4 3 6-8"/><path d="M3 21h18"/></svg>
+        </span>
+        <div>Аналитика деканата<small>топ-дисциплина недели: анатомия</small></div>
+      </div>
+      <div class="float-card fc3">
+        <span class="fc-ico" style="background:var(--amber-soft);color:#B36F0A">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.9 6.3L21 9.3l-4.5 4.4L17.8 20 12 16.8 6.2 20l1.3-6.3L3 9.3l6.1-1z"/></svg>
+        </span>
+        <div>Рейтинг наставника<small>подрос на 6 позиций</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section id="about">
+  <div class="wrap about-grid">
+    <div class="reveal">
+      <span class="overline">О проекте</span>
+      <h2>Взаимопомощь студентов — системой, а не случайностью</h2>
+      <p class="lead">«Помогалка» — это цифровая доска учебных запросов с системой мотивационных баллов. Младшекурсники получают понятный способ попросить помощи, старшекурсники — мотивацию делиться опытом, а вуз — работающий инструмент наставничества и удержания студентов.</p>
+      <div class="about-points">
+        <div class="point">
+          <span class="pcheck"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+          <div><b>Запрос → наставник → подтверждение → баллы</b><span>каждая помощь проходит полный цикл и фиксируется на платформе</span></div>
+        </div>
+        <div class="point">
+          <span class="pcheck"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+          <div><b>Только передача знаний</b><span>разбор тем, подготовка к экзаменам, объяснение методик — но не выполнение работ за студентов</span></div>
+        </div>
+        <div class="point">
+          <span class="pcheck"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+          <div><b>Поддержка вуза</b><span>проект реализуется при поддержке администрации Астраханского ГМУ и студенческого совета</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="stack-box reveal" style="animation-delay:.15s">
+      <h3>Одна платформа — везде</h3>
+      <p>Веб-версия и мобильная PWA-версия: открывается из браузера на любом устройстве, без установки из магазина приложений. Данные хранятся на серверах в РФ, с соблюдением 152-ФЗ.</p>
+      <div class="chips">
+        <span class="chip">Веб-версия</span>
+        <span class="chip">PWA · Android / iOS</span>
+        <span class="chip">Система баллов</span>
+        <span class="chip">Антифрод</span>
+        <span class="chip">Аналитика</span>
+        <span class="chip">Серверы в РФ</span>
+        <span class="chip">Python · PostgreSQL</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROBLEM ================= -->
+<section class="problem" id="problem">
+  <div class="wrap">
+    <div class="center reveal">
+      <span class="overline">Проблема</span>
+      <h2>Опрос 312 студентов АГМУ показал масштаб запроса</h2>
+      <p class="lead">В марте 2025 года команда проекта провела анонимный онлайн-опрос среди студентов Астраханского ГМУ. Результаты подтвердили: неформальной учебной поддержки в вузе системно не хватает.</p>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-card reveal"><div class="num"><span class="counter" data-count="67">0</span><em>%</em></div><p>студентов 1–2 курсов отметили нехватку доступной неформальной учебной поддержки</p></div>
+      <div class="stat-card reveal" style="transition-delay:.08s"><div class="num"><span class="counter" data-count="44">0</span><em>%</em></div><p>старшекурсников не помогают младшим из-за отсутствия мотивации и удобного инструмента</p></div>
+      <div class="stat-card reveal" style="transition-delay:.16s"><div class="num"><span class="counter" data-count="58">0</span><em>%</em></div><p>первокурсников испытывают высокий уровень учебной тревожности в период сессий</p></div>
+      <div class="stat-card reveal" style="transition-delay:.24s"><div class="num"><span class="counter" data-count="79">0</span><em>%</em></div><p>опрошенных поддержали идею создания платформы взаимопомощи</p></div>
+    </div>
+    <div class="footnote reveal"><span class="dot"></span>Анонимный онлайн-опрос команды проекта, март 2025 года, 312 студентов Астраханского ГМУ.</div>
+    <div class="problem-statement reveal">
+      <h3>Суть проблемы</h3>
+      <p>В студенческом сообществе отсутствует системный механизм передачи учебных знаний и опыта от старших студентов к младшим. Это ведёт к снижению успеваемости, росту учебной тревожности и отсеву первокурсников, а потенциал старшекурсников как наставников остаётся невостребованным — из-за отсутствия мотивации и удобного цифрового инструмента.</p>
+    </div>
+  </div>
+</section>
+<!-- ================= HOW ================= -->
+<section class="how" id="how">
+  <div class="wrap">
+    <div class="center reveal">
+      <span class="overline">Как это работает</span>
+      <h2>Пять шагов от вопроса до бонуса</h2>
+      <p class="lead">Каждый запрос на платформе проходит полный цикл — так помощь измерима, а баллы честные.</p>
+    </div>
+    <div class="how-wrap">
+      <div class="step-list reveal" role="tablist" aria-label="Шаги работы платформы">
+        <button class="step-item active" data-step="0" role="tab" aria-selected="true"><span class="snum">1</span><div><b>Студент публикует запрос</b><span>дисциплина, тема, срок</span></div></button>
+        <button class="step-item" data-step="1" role="tab" aria-selected="false"><span class="snum">2</span><div><b>Алгоритм подбирает наставников</b><span>по дисциплине, опыту и времени</span></div></button>
+        <button class="step-item" data-step="2" role="tab" aria-selected="false"><span class="snum">3</span><div><b>Наставник разбирает тему</b><span>онлайн или в кампусе АГМУ</span></div></button>
+        <button class="step-item" data-step="3" role="tab" aria-selected="false"><span class="snum">4</span><div><b>Результат подтверждён</b><span>запрос закрывается</span></div></button>
+        <button class="step-item" data-step="4" role="tab" aria-selected="false"><span class="snum">5</span><div><b>Наставник получает баллы</b><span>и обменивает на бонусы</span></div></button>
+      </div>
+      <div class="step-panel reveal">
+        <div class="step-body sp" data-sp="0">
+          <span class="step-tag">Шаг 1 · Запрос</span>
+          <h3>Запрос занимает минуту</h3>
+          <p>Студент 1–3 курса публикует запрос: дисциплина, конкретная тема и срок. Больше ничего заполнять не нужно — остальное подскажет платформа.</p>
+          <div class="step-demo">
+            <div class="row"><span class="pill p-teal">Анатомия</span><div><b>Разбор темы: плечевое сплетение</b></div><span class="end">к пятнице</span></div>
+            <div class="row"><span class="pill p-violet">Гистология</span><div><b>Кроветворные органы — объяснить схему кроветворения</b></div><span class="end">2 недели</span></div>
+          </div>
+        </div>
+        <div class="step-body sp" data-sp="1" hidden>
+          <span class="step-tag">Шаг 2 · Подбор</span>
+          <h3>Алгоритм находит подходящего наставника</h3>
+          <p>Платформа ранжирует наставников по дисциплине, оценкам, отзывам и доступному времени — и обучается на истории подтверждённых запросов.</p>
+          <div class="step-demo">
+            <div class="row"><span class="pill p-teal">92%</span><div><b>Наставник · 5 курс, лечебное дело</b></div><span class="end">24 запроса</span></div>
+            <div class="row"><span class="pill p-teal">87%</span><div><b>Наставник · 6 курс</b></div><span class="end">13 запросов</span></div>
+            <div class="row"><span class="pill p-violet">81%</span><div><b>Ординатор · травматология</b></div><span class="end">9 запросов</span></div>
+          </div>
+        </div>
+        <div class="step-body sp" data-sp="2" hidden>
+          <span class="step-tag">Шаг 3 · Помощь</span>
+          <h3>Живой разбор, а не готовый конспект</h3>
+          <p>Наставник объясняет тему, готовит к экзамену, разбирает методики — онлайн или лично в кампусе АГМУ. Платформа — про передачу знаний: помощь с отчётами и написанием работ запрещена правилами.</p>
+          <div class="step-demo">
+            <div class="row"><span class="pill p-teal">Сессия</span><div><b>45 минут · разбор схемы и типовых вопросов</b></div><span class="end">онлайн</span></div>
+            <div class="row"><span class="pill p-amber">Чек-лист</span><div><b>12 вопросов, которые точно спросят на экзамене</b></div><span class="end">в закрепе</span></div>
+          </div>
+        </div>
+        <div class="step-body sp" data-sp="3" hidden>
+          <span class="step-tag">Шаг 4 · Подтверждение</span>
+          <h3>Результат оценивает получатель</h3>
+          <p>Студент подтверждает, что тема разобрана и помощь получена. Только после этого запрос закрывается — так качество помощи измеримо, а статистика платформы достоверна.</p>
+          <div class="step-demo">
+            <div class="row"><span class="pill p-teal">Закрыт ✓</span><div><b>Запрос подтверждён получателем</b></div><span class="end">тема разобрана</span></div>
+            <div class="row"><span class="pill p-violet">Отзыв</span><div><b>Оценка наставника повышает его рейтинг</b></div><span class="end">влияет на подбор</span></div>
+          </div>
+        </div>
+        <div class="step-body sp" data-sp="4" hidden>
+          <span class="step-tag">Шаг 5 · Баллы</span>
+          <h3>Помощь превращается в бонусы вуза</h3>
+          <p>За подтверждённый запрос наставнику начисляются баллы. Антифрод проверяет каждое начисление, а вуз обменивает баллы на реальные бонусы.</p>
+          <div class="step-demo">
+            <div class="row"><span class="pill p-amber">+40</span><div><b>Баллы за подтверждённый разбор</b></div><span class="end">антифрод ✓</span></div>
+            <div class="row"><span class="pill p-teal">Обмен</span><div><b>Волонтёрские часы · мерч · приоритет практики</b></div><span class="end">в кабинете</span></div>
+          </div>
+        </div>
+        <div class="progress" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+    </div>
+    <div class="how-note reveal">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#B36F0A" stroke-width="2" stroke-linecap="round" style="flex:none;margin-top:2px"><circle cx="12" cy="12" r="10"/><path d="M12 8v4.5"/><circle cx="12" cy="16" r=".8" fill="#B36F0A"/></svg>
+      <div><b>Правила академической честности</b><span>Платформа помогает понять материал — разбирать темы, готовить к экзаменам, объяснять методики. Выполнение заданий и написание работ за студентов запрещены; правила утверждены совместно с вузом.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FEATURES ================= -->
+<section id="features">
+  <div class="wrap">
+    <div class="center reveal">
+      <span class="overline">Технологическое ядро</span>
+      <h2>Не просто доска объявлений</h2>
+      <p class="lead">Три интеллектуальных модуля делают платформу тиражируемым продуктом для вузов, а не разовым сервисом одного курса.</p>
+    </div>
+    <div class="grid g4" style="margin-top:46px">
+      <div class="card reveal">
+        <span class="ico i-teal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+        <h3>Алгоритм подбора наставника</h3>
+        <p>Ранжирование по дисциплине, оценкам, отзывам и доступному времени. Алгоритм обучается на истории подтверждённых запросов.</p>
+      </div>
+      <div class="card reveal" style="transition-delay:.08s">
+        <span class="ico i-amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-3.5 8-10V5l-8-3-8 3v7c0 6.5 8 10 8 10z"/><path d="M9 11.5l2 2 4-4.5"/></svg></span>
+        <h3>Антифрод баллов</h3>
+        <p>Обнаруживает взаимные накрутки, фиктивные запросы и повторяющиеся пары «наставник — получатель». Каждое начисление под контролем.</p>
+      </div>
+      <div class="card reveal" style="transition-delay:.16s">
+        <span class="ico i-violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 17l5-6 4 3 6-8"/><path d="M3 21h18"/></svg></span>
+        <h3>Аналитика для деканата</h3>
+        <p>Обезличенные агрегированные данные: где студентам труднее всего, по каким дисциплинам выше риск неуспеваемости — без индивидуальных оценок.</p>
+      </div>
+      <div class="card reveal" style="transition-delay:.24s">
+        <span class="ico i-navy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="13" height="14" rx="2"/><path d="M2 8h13"/><rect x="17" y="8" width="5" height="12" rx="1.5"/></svg></span>
+        <h3>Веб + PWA</h3>
+        <p>Работает в браузере на любом устройстве, без установки. Серверы в России, персональные данные — по 152-ФЗ, только с согласий.</p>
+      </div>
+    </div>
+    <div class="smart-note reveal" style="justify-content:flex-start;gap:24px;flex-wrap:wrap">
+      <span><b style="color:var(--teal-deep)">≥ 60%</b> запросов закрыто с подтверждением</span>
+      <span><b style="color:var(--teal-deep)">≤ 24 ч</b> до первого отклика наставника</span>
+      <span><b style="color:var(--teal-deep)">100%</b> подозрительных начислений — на проверке антифрода</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= BONUSES ================= -->
+<section id="bonuses" style="background:linear-gradient(180deg,#F4F7FA,#EFF4F7)">
+  <div class="wrap">
+    <div class="center reveal">
+      <span class="overline">Мотивация наставников</span>
+      <h2>За помощь — реальные бонусы</h2>
+      <p class="lead">Баллы начисляются только за подтверждённую помощь и обмениваются на внутривузовские бонусы по соглашению с администрацией Астраханского ГМУ.</p>
+    </div>
+    <div class="grid g4" style="margin-top:46px">
+      <div class="card reveal" style="text-align:center">
+        <span class="ico i-teal" style="margin:0 auto 18px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></span>
+        <h3>Волонтёрские часы</h3>
+        <p>Помощь младшекурсникам закрывает личный волонтёрский счёт — официально, через вуз.</p>
+      </div>
+      <div class="card reveal" style="text-align:center;transition-delay:.08s">
+        <span class="ico i-violet" style="margin:0 auto 18px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12.5V17c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5"/><path d="M22 10v6"/></svg></span>
+        <h3>Скидка на доп. образование</h3>
+        <p>Баллы обмениваются на скидку при оплате дополнительного образования в Астраханском ГМУ.</p>
+      </div>
+      <div class="card reveal" style="text-align:center;transition-delay:.16s">
+        <span class="ico i-amber" style="margin:0 auto 18px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 5-3 8.5-7 10-4-1.5-7-5-7-10V6l7-3z"/><path d="M9.5 11.5l2 2 3.5-4"/></svg></span>
+        <h3>Мерч АГМУ</h3>
+        <p>Брендированные футболки и кружки — для топ-наставников по итогам семестра.</p>
+      </div>
+      <div class="card reveal" style="text-align:center;transition-delay:.24s">
+        <span class="ico i-navy" style="margin:0 auto 18px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg></span>
+        <h3>Приоритет практики</h3>
+        <p>Активные наставники получают приоритет при выборе места практики — аргумент, который работает.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= GOALS ================= -->
+<section id="goals">
+  <div class="wrap">
+    <div class="center reveal">
+      <span class="overline">Цели и показатели</span>
+      <h2>Измеримые цели на 12 месяцев</h2>
+      <p class="lead">Цель проекта сформулирована по принципу SMART: конкретна, измерима, достижима, актуальна и ограничена сроком реализации гранта.</p>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi reveal"><div class="knum"><span class="counter" data-count="300">0</span><em>+</em></div><b>зарегистрированных студентов</b><span>выгрузка из базы данных платформы</span></div>
+      <div class="kpi reveal" style="transition-delay:.08s"><div class="knum"><span class="counter" data-count="500">0</span><em>+</em></div><b>выполненных учебных запросов</b><span>логи и статистика закрытых запросов</span></div>
+      <div class="kpi reveal" style="transition-delay:.16s"><div class="knum"><span class="counter" data-count="50">0</span><em>%</em></div><b>младшекурсников среди пользователей</b><span>статистика платформы по курсам</span></div>
+      <div class="kpi reveal" style="transition-delay:.24s"><div class="knum">−<span class="counter" data-count="30">0</span><em>%</em></div><b>снижение учебной тревожности</b><span>опрос «до/после» по шкале Спилбергера–Ханина</span></div>
+      <div class="kpi reveal" style="transition-delay:.32s"><div class="knum"><span class="counter" data-count="14">0</span></div><b>мероприятий за 12 месяцев</b><span>программы, фотоотчёты, списки участников</span></div>
+      <div class="kpi reveal" style="transition-delay:.4s"><div class="knum"><span class="counter" data-count="15">0</span><em>+</em></div><b>публикаций в медиа и соцсетях</b><span>ВКонтакте, Telegram, СМИ, газета «Медик»</span></div>
+      <div class="kpi reveal" style="transition-delay:.48s"><div class="knum"><span class="counter" data-count="20000">0</span><em>+</em></div><b>просмотров публикаций</b><span>скриншоты статистики из соцсетей и СМИ</span></div>
+      <div class="kpi reveal" style="transition-delay:.56s"><div class="knum"><span class="counter" data-count="4">0</span></div><b>презентационных мероприятия</b><span>для студентов, преподавателей и деканатов</span></div>
+    </div>
+    <div class="smart-note reveal">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--teal-deep)" stroke-width="2" stroke-linecap="round" style="flex:none"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1" fill="var(--teal-deep)"/></svg>
+      Обеспечить не менее 500 успешно выполненных учебных запросов при участии не менее 300 зарегистрированных студентов и снижение субъективного уровня учебной тревожности участников не менее чем на 30% — посредством запуска и апробации платформы «Помогалка» в Астраханском ГМУ.
+    </div>
+  </div>
+</section>
+
+<!-- ================= PLAN ================= -->
+<section class="plan" id="plan">
+  <div class="wrap">
+    <div class="center reveal">
+      <span class="overline">Календарный план</span>
+      <h2>12 месяцев и три контрольные точки</h2>
+      <p class="lead">Реализация проекта разделена на три этапа с контрольными точками в соответствии с требованиями Росмолодёжь.Гранты.</p>
+    </div>
+    <div class="timeline">
+      <div class="titem reveal">
+        <span class="tdot">1</span>
+        <div class="tcard">
+          <div class="tlabel">Контрольная точка · конец 4-го месяца</div>
+          <h3>Создание и партнёрство</h3>
+          <ul>
+            <li>Разработаны ТЗ и дизайн-макеты платформы</li>
+            <li>Заключено соглашение о партнёрстве с Астраханским ГМУ</li>
+            <li>Готова веб-версия платформы</li>
+            <li>Настроена система баллов и бонусной программы</li>
+            <li><b>2 мероприятия, 15 участников</b></li>
+          </ul>
+        </div>
+      </div>
+      <div class="titem reveal" style="transition-delay:.12s">
+        <span class="tdot">2</span>
+        <div class="tcard">
+          <div class="tlabel">Контрольная точка · конец 8-го месяца</div>
+          <h3>Запуск и первый рост</h3>
+          <ul>
+            <li>Платформа запущена, включая мобильную PWA-версию</li>
+            <li><b>200 зарегистрированных студентов</b></li>
+            <li><b>250 выполненных запросов</b></li>
+            <li>2 презентационных мероприятия проведено</li>
+            <li><b>8 мероприятий, 200 участников</b></li>
+          </ul>
+        </div>
+      </div>
+      <div class="titem reveal" style="transition-delay:.24s">
+        <span class="tdot">3</span>
+        <div class="tcard">
+          <div class="tlabel">Контрольная точка · конец 12-го месяца</div>
+          <h3>Масштаб и итоги</h3>
+          <ul>
+            <li><b>300+ зарегистрированных студентов</b></li>
+            <li><b>500+ выполненных запросов</b></li>
+            <li>4 презентационных мероприятия, публичный отчёт</li>
+            <li>Замер тревожности и оценка социального эффекта</li>
+            <li><b>14 мероприятий, 300+ участников</b></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= BUDGET ================= -->
+<section id="budget">
+  <div class="wrap">
+    <div class="center reveal">
+      <span class="overline">Бюджет</span>
+      <h2>Финансирование проекта</h2>
+      <p class="lead">Общий бюджет — 439 000 рублей: грантовые средства, собственный вклад команды и вклад партнёра. Каждая статья сметы подтверждается коммерческими предложениями.</p>
+    </div>
+    <div class="budget-grid">
+      <div class="reveal">
+        <div class="donut-zone">
+          <svg viewBox="0 0 200 200" role="img" aria-label="Структура бюджета: грант 76,8%, команда 20,5%, партнёр 2,7%">
+            <circle cx="100" cy="100" r="80" stroke="#E3EAF2"/>
+            <circle cx="100" cy="100" r="80" stroke="#0E9384" stroke-dasharray="385.86 502.65"/>
+            <circle cx="100" cy="100" r="80" stroke="#F5A524" stroke-dasharray="103.05 502.65" stroke-dashoffset="-385.86"/>
+            <circle cx="100" cy="100" r="80" stroke="#6D5BD0" stroke-dasharray="13.74 502.65" stroke-dashoffset="-488.91"/>
+          </svg>
+          <div class="donut-center"><div><b>439 000 ₽</b><span>общий бюджет<br>12 месяцев</span></div></div>
+        </div>
+        <div class="legend">
+          <div class="lrow"><span class="sw" style="background:var(--teal)"></span><div><b>Грант Росмолодёжь.Гранты</b><br><small>запрашиваемая сумма</small></div><span>337 000 ₽ · 76,8%</span></div>
+          <div class="lrow"><span class="sw" style="background:var(--amber)"></span><div><b>Собственный вклад команды</b><br><small>дизайн и волонтёрский труд</small></div><span>90 000 ₽ · 20,5%</span></div>
+          <div class="lrow"><span class="sw" style="background:var(--violet)"></span><div><b>Вклад партнёра — Астраханский ГМУ</b><br><small>аудитории для мероприятий</small></div><span>12 000 ₽ · 2,7%</span></div>
+        </div>
+      </div>
+      <div class="budget-items reveal" style="transition-delay:.15s">
+        <h3>Ключевые статьи расходов</h3>
+        <div class="bitem"><span>Разработка веб-платформы и мобильной PWA-версии</span><b>200 000 ₽</b></div>
+        <div class="bitem"><span>Таргетированная реклама ВКонтакте и Telegram</span><b>32 000 ₽</b></div>
+        <div class="bitem"><span>Хостинг, домен, SSL-сертификат и защита данных</span><b>29 000 ₽</b></div>
+        <div class="bitem"><span>Мерч для топ-наставников (50 шт.)</span><b>25 000 ₽</b></div>
+        <div class="bitem"><span>Аренда залов для презентационных мероприятий</span><b>20 000 ₽</b></div>
+        <div class="bitem"><span>Полиграфическая продукция (листовки, плакаты)</span><b>15 000 ₽</b></div>
+        <div class="bitem"><span>Канцелярия, расходные материалы и связь</span><b>16 000 ₽</b></div>
+        <div class="budget-total"><span>Запрашиваемая сумма гранта</span><b>337 000 ₽</b></div>
+        <div class="smart-note" style="margin-top:20px">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--teal-deep)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M12 22s8-3.5 8-10V5l-8-3-8 3v7c0 6.5 8 10 8 10z"/><path d="M9 11.5l2 2 4-4.5"/></svg>
+          В смете отсутствуют запрещённые статьи расходов. Устойчивость после гранта: хостинговые расходы (~24 000 ₽/год) покрываются бюджетом студенческого совета или профсоюза студентов АГМУ.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= TEAM ================= -->
+<section class="team" id="team">
+  <div class="wrap">
+    <div class="center reveal">
+      <span class="overline">Команда</span>
+      <h2>Пять человек, которые это сделают</h2>
+      <p class="lead">Команда проекта — 5 человек в возрасте от 18 до 30 лет, студенты и выпускники Астраханского ГМУ. Все участники верифицированы в системе «Молодёжь России».</p>
+    </div>
+    <div class="team-grid">
+      <div class="tcard-m reveal"><span class="tava a1">Р</span><b>Руководитель проекта</b><span>стратегия, партнёрства с вузом, отчётность по гранту</span></div>
+      <div class="tcard-m reveal" style="transition-delay:.06s"><span class="tava a2">IT</span><b>IT-специалист</b><span>разработка платформы, алгоритм подбора, антифрод</span></div>
+      <div class="tcard-m reveal" style="transition-delay:.12s"><span class="tava a3">К</span><b>Координатор</b><span>пилотный запуск, поддержка пользователей, работа со студсоветом</span></div>
+      <div class="tcard-m reveal" style="transition-delay:.18s"><span class="tava a4">PR</span><b>PR-менеджер</b><span>медиастратегия, соцсети, публикации и охваты</span></div>
+      <div class="tcard-m reveal" style="transition-delay:.24s"><span class="tava a5">П</span><b>Психолог</b><span>методика Спилбергера–Ханина, замер учебной тревожности</span></div>
+    </div>
+    <div class="partners reveal">
+      <h3>Партнёры проекта</h3>
+      <div class="pgrid">
+        <div class="pcard">
+          <span class="pico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12.5V17c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5"/></svg></span>
+          <div><b>ФГБОУ ВО «Астраханский ГМУ» Минздрава России</b><span>партнёр-площадка: аудитории, внедрение бонусной системы, информационная поддержка</span></div>
+        </div>
+        <div class="pcard">
+          <span class="pico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+          <div><b>Студенческий совет АГМУ</b><span>информационная поддержка и привлечение студентов на платформу</span></div>
+        </div>
+        <div class="pcard">
+          <span class="pico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.9 6.3L21 9.3l-4.5 4.4L17.8 20 12 16.8 6.2 20l1.3-6.3L3 9.3l6.1-1z"/></svg></span>
+          <div><b>Центр молодёжных инициатив Астраханской области</b><span>поддержка и возможная интеграция в региональные программы наставничества</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= GROWTH ================= -->
+<section id="growth">
+  <div class="wrap">
+    <div class="center reveal">
+      <span class="overline">Перспективы развития</span>
+      <h2>От одного вуза — к модели для всей страны</h2>
+      <p class="lead">Проект спроектирован так, чтобы после завершения гранта продолжать развиваться и тиражироваться.</p>
+    </div>
+    <div class="growth-grid">
+      <div class="gcard reveal"><div class="gnum">01</div><b>Интеграция в рейтинг студента</b><p>Баллы платформы встраиваются в официальный рейтинг студентов АГМУ — переговоры с вузом начаты.</p></div>
+      <div class="gcard reveal" style="transition-delay:.08s"><div class="gnum">02</div><b>Масштабирование на вузы Астрахани</b><p>Тиражирование модели на АГУ и АГТУ, затем — лицензии для вузов и колледжей по подписке.</p></div>
+      <div class="gcard reveal" style="transition-delay:.16s"><div class="gnum">03</div><b>Кадровый резерв наставников</b><p>Клиники региона получают доступ к лучшим наставникам — будущим сотрудникам, с согласия студентов.</p></div>
+      <div class="gcard reveal" style="transition-delay:.24s"><div class="gnum">04</div><b>Передача опыта</b><p>Открытая методика запуска платформы взаимопомощи, презентации кейса на форумах «iВолга» и «Таврида».</p></div>
+    </div>
+    <div class="quote reveal">
+      <p>Помогите нам сделать студенческую взаимопомощь системой, а не случайностью.</p>
+      <span>— команда проекта «Помогалка», Астраханский ГМУ</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section id="faq" style="background:linear-gradient(180deg,#F4F7FA,#EFF4F7)">
+  <div class="wrap">
+    <div class="center reveal">
+      <span class="overline">Частые вопросы</span>
+      <h2>Коротко о главном</h2>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item reveal">
+        <summary>Сколько стоит участие для студентов?<span class="fplus">+</span></summary>
+        <div class="fbody">Ничего. Взаимопомощь за баллы — бесплатное ядро платформы, и таким оно останется. Баллы наставники получают от платформы, а не от студентов.</div>
+      </details>
+      <details class="faq-item reveal">
+        <summary>Кто может стать наставником?<span class="fplus">+</span></summary>
+        <div class="fbody">Студенты 4–6 курсов и ординаторы Астраханского ГМУ, готовые разбирать темы и помогать младшекурсникам по профильным дисциплинам: анатомия, гистология, биохимия, фармакология, клинические дисциплины.</div>
+      </details>
+      <details class="faq-item reveal">
+        <summary>Как защищены баллы от накрутки?<span class="fplus">+</span></summary>
+        <div class="fbody">Баллы начисляются только после подтверждения результата получателем. Модуль антифрода отслеживает взаимные накрутки, фиктивные запросы и повторяющиеся пары «наставник — получатель».</div>
+      </details>
+      <details class="faq-item reveal">
+        <summary>Платформа пишет работы за студентов?<span class="fplus">+</span></summary>
+        <div class="fbody">Нет, это против правил платформы и академической честности. «Помогалка» — про передачу знаний: разбор тем, подготовка к экзаменам, объяснение методик. Правила утверждены совместно с вузом.</div>
+      </details>
+      <details class="faq-item reveal">
+        <summary>Что нужно, чтобы присоединиться?<span class="fplus">+</span></summary>
+        <div class="fbody">Пилотный запуск проходит в Астраханском ГМУ: следите за анонсами студенческого совета и каналов вуза. Платформа откроется из браузера — устанавливать ничего не нужно.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CTA ================= -->
+<section class="cta-band" id="cta">
+  <div class="wrap">
+    <div class="cta-box reveal">
+      <h2>Стань частью «Помогалки»</h2>
+      <p>Студент — задай вопрос и получи помощь. Старшекурсник — стань наставником и получи бонусы. Вуз или партнёр — поддержи проект и помоги запустить его первым.</p>
+      <div class="cta-actions">
+        <a class="btn btn-teal" href="login.html">Попробовать платформу <span class="arr">→</span></a>
+        <a class="btn btn-ghost" href="how.html">Узнать, как это работает</a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="logo" href="#top">
+          <span class="logo-mark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12.5V17c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5"/></svg>
+          </span>
+          Помогалка
+        </a>
+        <p>Образовательная платформа «Помогалка»: биржа студенческой взаимопомощи Астраханского ГМУ. Проект номинирован на конкурс Росмолодёжь.Гранты в номинации #делись_опытом.</p>
+      </div>
+      <div>
+        <h4>Разделы</h4>
+        <ul>
+          <li><a href="#about">О проекте</a></li>
+          <li><a href="#how">Как это работает</a></li>
+          <li><a href="#goals">Цели и показатели</a></li>
+          <li><a href="#budget">Бюджет</a></li>
+          <li><a href="#faq">Частые вопросы</a></li>
+          <li><a href="login.html">Личный кабинет</a></li>
+          <li><a href="admin.html">Админ-панель</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Контакты</h4>
+        <ul>
+          <li>г. Астрахань, ул. Бакинская, д. 121<br>Астраханский ГМУ</li>
+          <li>г. Астрахань, ул. Шаумяна, д. 18<br>учебный корпус</li>
+          <li>Регион: Астраханская область</li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2025–2026 · Проект «Помогалка» · Астраханский ГМУ</span>
+      <span>Сайт-презентация проекта. Демо-версия платформы: <a href="login.html" style="color:var(--amber)">войти одним кликом</a>.</span>
+    </div>
+  </div>
+</footer>
+
+<button class="totop" id="toTop" aria-label="Наверх">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+<script>
+(function(){
+  'use strict';
+  var header = document.getElementById('siteHeader');
+  var toTop = document.getElementById('toTop');
+  var burger = document.getElementById('burger');
+  var mobileMenu = document.getElementById('mobileMenu');
+
+  /* header + back-to-top */
+  function onScroll(){
+    var y = window.scrollY;
+    header.classList.toggle('scrolled', y > 40);
+    toTop.classList.toggle('show', y > 700);
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+  toTop.addEventListener('click', function(){ window.scrollTo({top:0, behavior:'smooth'}); });
+
+  /* mobile menu */
+  burger.addEventListener('click', function(){
+    var open = mobileMenu.classList.toggle('open');
+    burger.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', open);
+  });
+  mobileMenu.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      mobileMenu.classList.remove('open');
+      burger.classList.remove('open');
+    });
+  });
+
+  /* reveal on scroll */
+  var revealObserver = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        e.target.classList.add('on');
+        revealObserver.unobserve(e.target);
+      }
+    });
+  }, {threshold:.12, rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal').forEach(function(el){ revealObserver.observe(el); });
+
+  /* animated counters */
+  function animateCounter(el){
+    var target = parseInt(el.getAttribute('data-count'), 10);
+    var dur = 1600, t0 = null;
+    function fmt(n){ return n.toLocaleString('ru-RU'); }
+    function tick(t){
+      if(!t0) t0 = t;
+      var p = Math.min((t - t0) / dur, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = fmt(Math.round(target * eased));
+      if(p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+  var counterObserver = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        animateCounter(e.target);
+        counterObserver.unobserve(e.target);
+      }
+    });
+  }, {threshold:.4});
+  document.querySelectorAll('.counter').forEach(function(el){ counterObserver.observe(el); });
+
+  /* stepper: click + auto-advance */
+  var stepItems = Array.prototype.slice.call(document.querySelectorAll('.step-item'));
+  var stepBodies = Array.prototype.slice.call(document.querySelectorAll('.sp'));
+  var bars = Array.prototype.slice.call(document.querySelectorAll('.progress i'));
+  var current = 0, timer = null, AUTO_MS = 4600;
+  function showStep(i){
+    current = (i + stepItems.length) % stepItems.length;
+    stepItems.forEach(function(b, k){
+      b.classList.toggle('active', k === current);
+      b.setAttribute('aria-selected', k === current ? 'true' : 'false');
+    });
+    stepBodies.forEach(function(d, k){
+      if(k === current){ d.removeAttribute('hidden'); }
+      else { d.setAttribute('hidden', ''); }
+    });
+    bars.forEach(function(bar, k){
+      bar.classList.remove('on');
+      if(k === current){
+        void bar.offsetWidth; /* restart fill animation */
+        bar.classList.add('on');
+      }
+    });
+  }
+  function startAuto(){
+    stopAuto();
+    timer = setInterval(function(){ showStep(current + 1); }, AUTO_MS);
+  }
+  function stopAuto(){ if(timer){ clearInterval(timer); timer = null; } }
+  stepItems.forEach(function(btn, k){
+    btn.addEventListener('click', function(){
+      showStep(k);
+      stopAuto(); /* manual navigation pauses autoplay */
+    });
+  });
+  showStep(0);
+  startAuto();
+  /* pause autoplay when the panel is off-screen */
+  var panel = document.querySelector('.step-panel');
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ e.isIntersecting ? startAuto() : stopAuto(); });
+    }, {threshold:.25}).observe(panel);
+  }
+
+  /* active section in nav */
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('#mainMenu a'));
+  var sections = navLinks.map(function(a){ return document.querySelector(a.getAttribute('href')); });
+  var navObserver = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        navLinks.forEach(function(a){
+          a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id);
+        });
+      }
+    });
+  }, {rootMargin:'-45% 0px -50% 0px'});
+  sections.forEach(function(s){ if(s) navObserver.observe(s); });
+})();
+</script>
+</body>
+</html>
